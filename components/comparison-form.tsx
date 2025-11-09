@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ResultsDisplay } from "@/components/results-display"
-import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe } from "lucide-react"
+import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe, Gift } from "lucide-react"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
@@ -20,6 +20,15 @@ interface ComparisonFormProps {
 }
 
 const presets = {
+  freeTier: {
+    messagesPerMonth: 500000,
+    requireOrdering: "no",
+    messageLossTolerance: "high",
+    replayNeeded: "no",
+    monthlyBudget: 0,
+    environment: "aws",
+    region: "us-east-1" as AwsRegion,
+  },
   microservices: {
     messagesPerMonth: 5000000,
     requireOrdering: "no",
@@ -157,6 +166,16 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   className="space-y-4"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* AWS Free Tier Preset */}
+                    <PresetCard
+                      icon={<Gift className="h-5 w-5" />}
+                      title={t.presetFreeTier}
+                      description={t.presetFreeTierDesc}
+                      features={[`${formatNumber(500000)} ${t.messagesMonth}`, t.noOrdering, `$0 ${t.budget}`]}
+                      onClick={() => handlePresetSelect("freeTier")}
+                      selected={selectedPreset === "freeTier"}
+                    />
+
                     {/* Microservices Preset */}
                     <PresetCard
                       icon={<Sparkles className="h-5 w-5" />}
@@ -253,13 +272,13 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     <Slider
                       value={[formData.monthlyBudget]}
                       onValueChange={([value]) => setFormData({ ...formData, monthlyBudget: value })}
-                      min={10}
+                      min={0}
                       max={5000}
                       step={10}
                       className="py-4"
                     />
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>$10</span>
+                      <span>$0 (Free Tier)</span>
                       <span>$5,000</span>
                     </div>
                   </div>
