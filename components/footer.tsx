@@ -1,13 +1,10 @@
 import type { Locale } from "@/lib/i18n";
-import { useTranslation } from "@/lib/i18n";
 
 interface FooterProps {
   locale: Locale;
 }
 
 export function Footer({ locale }: FooterProps) {
-  const t = useTranslation(locale);
-
   const content = {
     en: {
       copyright: "© 2025 QueueAdvisor",

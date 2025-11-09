@@ -26,6 +26,7 @@
 ## Credits
 
 All credits go to:
+
 - **AWS** - Amazon SQS, Amazon MSK, and all AWS services
 - **AWS Labs** - Model Context Protocol (MCP)
 - **Apache Software Foundation** - Apache Kafka
@@ -69,6 +70,7 @@ This is an open-source project and **contributions are welcome**!
 ## Project Goals
 
 This MVP was created to:
+
 1. **Aggregate AWS Information** - Combine scattered documentation into one place
 2. **Learn and Share** - Personal learning experience shared with the community
 3. **Help Developers** - Make architecture decisions easier
@@ -80,7 +82,8 @@ This project is open source and available under the MIT License.
 
 ## Contact
 
-**Fernando Francisco Azevedo**
+### Fernando Francisco Azevedo
+
 - Portfolio: [fernando.moretes.com](https://fernando.moretes.com)
 - GitHub: [@fernandoazevedomoretes](https://github.com/fernandoazevedomoretes)
 - LinkedIn: [fernando-francisco-azevedo](https://www.linkedin.com/in/fernando-francisco-azevedo)

@@ -1,13 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
-
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://queueadvisor.fernando.moretes.com"),
@@ -44,7 +40,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Fernando Francisco Azevedo", url: "https://fernando.moretes.com" }],
   creator: "Fernando Francisco Azevedo",
   publisher: "Fernando Francisco Azevedo",
-  generator: "v0.app",
   applicationName: "QueueAdvisor",
   referrer: "origin-when-cross-origin",
   category: "Technology",
