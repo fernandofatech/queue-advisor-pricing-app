@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       bestRegion,
     })
   } catch (error) {
-    console.error("[v0] Error in compare API:", error)
+    console.error("Error in compare API:", error)
     return NextResponse.json({ error: "Failed to process comparison" }, { status: 500 })
   }
 }

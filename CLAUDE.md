@@ -130,7 +130,3 @@ TypeScript is configured with `@/*` path alias pointing to the root directory (s
 - Form state is managed with React `useState` (no external state management)
 - API routes return JSON with proper error handling
 - All user-facing strings must be internationalized through `lib/i18n.ts`
-
-## v0.app Integration
-
-This project is automatically synced with v0.app deployments. Changes made on v0.app are pushed to this repository. The project can be continued at: <https://v0.app/chat/dzRFkt9pas0>
