@@ -90,6 +90,16 @@ export const translations = {
     withReplay: "With message replay",
     budget: "monthly budget",
 
+    // New analysis actions
+    startNewAnalysis: "Start New Analysis",
+    startNewAnalysisDesc: "Compare another configuration",
+    compareAnalyses: "Compare Analyses",
+    compareAnalysesDesc: "View side-by-side comparison",
+    viewSavedAnalyses: "View Saved Analyses",
+    saveAnalysis: "Save Analysis",
+    exportResults: "Export Results",
+    shareResults: "Share Results",
+
     // Environment descriptions
     awsDesc: "AWS-only deployment",
     multicloudDesc: "Multi-cloud flexibility",
@@ -101,6 +111,7 @@ export const translations = {
       docs: "Documentation",
       faq: "FAQ",
       credits: "Credits",
+      compare: "Compare",
     },
 
     // Documentation
@@ -392,6 +403,16 @@ export const translations = {
     withReplay: "Com replay de mensagens",
     budget: "orçamento mensal",
 
+    // New analysis actions
+    startNewAnalysis: "Iniciar Nova Análise",
+    startNewAnalysisDesc: "Comparar outra configuração",
+    compareAnalyses: "Comparar Análises",
+    compareAnalysesDesc: "Ver comparação lado a lado",
+    viewSavedAnalyses: "Ver Análises Salvas",
+    saveAnalysis: "Salvar Análise",
+    exportResults: "Exportar Resultados",
+    shareResults: "Compartilhar Resultados",
+
     // Environment descriptions
     awsDesc: "Implantação somente AWS",
     multicloudDesc: "Flexibilidade multinuvem",
@@ -403,6 +424,7 @@ export const translations = {
       docs: "Documentação",
       faq: "Perguntas Frequentes",
       credits: "Créditos",
+      compare: "Comparar",
     },
 
     // Documentation

@@ -5,19 +5,46 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ServiceRadarChart } from "@/components/service-radar-chart"
 import { PricingTable } from "@/components/pricing-table"
 import { ExportShareMenu } from "@/components/export-share-menu"
-import { CheckCircle2, ExternalLink, AlertCircle, TrendingUp, Zap, DollarSign, MapPin, Award } from "lucide-react"
+import { CheckCircle2, ExternalLink, AlertCircle, TrendingUp, Zap, DollarSign, MapPin, Award, RotateCcw, Save, GitCompare } from "lucide-react"
+import Link from "next/link"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 
 interface ResultsDisplayProps {
   results: ComparisonResult
   locale: Locale
+  onStartNewAnalysis?: () => void
 }
 
-export function ResultsDisplay({ results, locale }: ResultsDisplayProps) {
+export function ResultsDisplay({ results, locale, onStartNewAnalysis }: ResultsDisplayProps) {
   const t = useTranslation(locale)
+
+  const handleSaveAnalysis = () => {
+    // Get existing analyses from localStorage
+    const savedAnalyses = JSON.parse(localStorage.getItem("queueadvisor-analyses") || "[]")
+
+    // Add current analysis with timestamp
+    const analysisWithMetadata = {
+      ...results,
+      savedAt: new Date().toISOString(),
+      id: Date.now().toString(),
+    }
+
+    savedAnalyses.push(analysisWithMetadata)
+
+    // Keep only last 10 analyses
+    if (savedAnalyses.length > 10) {
+      savedAnalyses.shift()
+    }
+
+    localStorage.setItem("queueadvisor-analyses", JSON.stringify(savedAnalyses))
+
+    // Show success message
+    alert(locale === "pt" ? "Análise salva com sucesso!" : "Analysis saved successfully!")
+  }
 
   // Extract numeric values from pricing strings (e.g., "$0.40" -> 0.40)
   const parsePricing = (priceStr: string): number => {
@@ -46,8 +73,37 @@ export function ResultsDisplay({ results, locale }: ResultsDisplayProps) {
       transition={{ duration: 0.5 }}
       className="space-y-8"
     >
-      <div className="flex justify-end">
-        <ExportShareMenu results={results} locale={locale} />
+      <div className="flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-wrap gap-3">
+          <Button
+            onClick={() => {
+              if (onStartNewAnalysis) {
+                onStartNewAnalysis()
+              } else {
+                window.scrollTo({ top: 0, behavior: "smooth" })
+                window.location.reload()
+              }
+            }}
+            variant="outline"
+            className="gap-2"
+          >
+            <RotateCcw className="h-4 w-4" />
+            {t.startNewAnalysis}
+          </Button>
+          <Button onClick={handleSaveAnalysis} variant="outline" className="gap-2">
+            <Save className="h-4 w-4" />
+            {t.saveAnalysis}
+          </Button>
+          <Link href="/compare">
+            <Button variant="outline" className="gap-2">
+              <GitCompare className="h-4 w-4" />
+              {t.viewSavedAnalyses}
+            </Button>
+          </Link>
+        </div>
+        <div className="flex gap-3">
+          <ExportShareMenu results={results} locale={locale} />
+        </div>
       </div>
 
       {/* Recommendation Card */}

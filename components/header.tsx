@@ -19,6 +19,7 @@ export function Header({ locale, onLocaleChange }: HeaderProps) {
 
   const navItems = [
     { href: "/", label: t.nav.home },
+    { href: "/compare", label: t.nav.compare },
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/docs", label: t.nav.docs },
     { href: "/faq", label: t.nav.faq },

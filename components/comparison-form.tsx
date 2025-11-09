@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ResultsDisplay } from "@/components/results-display"
-import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe, Gift } from "lucide-react"
+import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe, Gift, Settings } from "lucide-react"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
@@ -115,6 +115,22 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
     }
   }
 
+  const handleStartNewAnalysis = () => {
+    setResults(null)
+    setCurrentStep(0)
+    setSelectedPreset(null)
+    setFormData({
+      messagesPerMonth: 5000000,
+      requireOrdering: "no",
+      messageLossTolerance: "medium",
+      replayNeeded: "no",
+      monthlyBudget: 200,
+      environment: "aws",
+      region: "us-east-1",
+    })
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   const nextStep = () => {
     if (currentStep < 3) setCurrentStep(currentStep + 1)
   }
@@ -217,18 +233,34 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     />
                   </div>
 
-                  <div className="pt-4 flex justify-center">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => {
-                        setSelectedPreset("custom")
-                        setCurrentStep(1)
-                      }}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      {t.customConfiguration}
-                    </Button>
+                  <div className="pt-6">
+                    <Card className="border-2 border-dashed border-brand-primary/30 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5 hover:border-brand-primary/50 transition-all cursor-pointer">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedPreset("custom")
+                          setCurrentStep(1)
+                        }}
+                        className="w-full"
+                      >
+                        <CardContent className="pt-6 pb-6">
+                          <div className="flex items-center justify-center gap-3">
+                            <div className="p-3 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg shadow-md">
+                              <Settings className="h-6 w-6 text-white" />
+                            </div>
+                            <div className="text-left">
+                              <h3 className="font-semibold text-lg text-foreground">{t.customConfiguration}</h3>
+                              <p className="text-sm text-muted-foreground mt-0.5">
+                                {locale === "pt"
+                                  ? "Configure seus próprios parâmetros personalizados"
+                                  : "Configure your own custom parameters"}
+                              </p>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-brand-primary ml-auto" />
+                          </div>
+                        </CardContent>
+                      </button>
+                    </Card>
                   </div>
                 </motion.div>
               )}
@@ -460,7 +492,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
         </CardContent>
       </Card>
 
-      {results && <ResultsDisplay results={results} locale={locale} />}
+      {results && <ResultsDisplay results={results} locale={locale} onStartNewAnalysis={handleStartNewAnalysis} />}
     </div>
   )
 }
