@@ -1,3 +1,5 @@
+import type { RegionInfo } from "@/lib/aws-pricing"
+
 export interface ComparisonResult {
   recommendation: string
   explanation: string
@@ -9,5 +11,10 @@ export interface ComparisonResult {
   pricing: {
     sqs: { "1M": string; "10M": string; "100M": string }
     kafka: { "1M": string; "10M": string; "100M": string }
+    region: RegionInfo
+  }
+  bestRegion?: {
+    region: RegionInfo
+    reason: string
   }
 }

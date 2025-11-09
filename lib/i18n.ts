@@ -98,6 +98,7 @@ export const translations = {
       howItWorks: "How It Works",
       docs: "Documentation",
       faq: "FAQ",
+      credits: "Credits",
     },
 
     // Documentation
@@ -107,6 +108,9 @@ export const translations = {
       awsResources: "AWS Resources",
       architecturePatterns: "Architecture Patterns",
       detailedComparison: "Detailed Comparison",
+      mcpSection: "AWS Model Context Protocol (MCP)",
+      mcpIntro:
+        "Enhance your AWS workflows with the Model Context Protocol - a powerful framework for AI-assisted cloud operations and automation.",
 
       // SQS Resources
       sqsOverview: "Amazon SQS Developer Guide",
@@ -230,10 +234,10 @@ export const translations = {
       technicalCategory: "Technical",
 
       q1: "What is QueueAdvisor?",
-      a1: "QueueAdvisor is a free tool that helps you choose between Amazon SQS and Apache Kafka (MSK) based on your technical requirements, message volume, and budget. It uses real AWS pricing data and best practices to provide personalized recommendations.",
+      a1: "QueueAdvisor is a free, open-source MVP tool that aggregates AWS information and best practices to help you choose between Amazon SQS and Apache Kafka (MSK). This project combines existing documentation and resources into a helpful decision-making tool.",
 
       q2: "Is QueueAdvisor affiliated with AWS?",
-      a2: "No, QueueAdvisor is an independent tool created by Fernando Moretes. It uses publicly available AWS pricing information and documentation to help developers make informed decisions.",
+      a2: "No, QueueAdvisor is an independent MVP project. All AWS services, MCP, and documentation are property of their respective owners. This tool simply aggregates publicly available information to help developers make informed decisions.",
 
       q3: "How accurate are the recommendations?",
       a3: "The recommendations are based on AWS best practices, official documentation, and real-world use cases. However, every architecture is unique, so we recommend using QueueAdvisor as a starting point and consulting with AWS architects for production deployments.",
@@ -263,6 +267,38 @@ export const translations = {
       resource2Desc: "Estimate costs for your AWS infrastructure",
       resource3Title: "AWS Free Tier",
       resource3Desc: "Learn about free tier limits for SQS and MSK",
+    },
+
+    // Credits & Contributions
+    credits: {
+      title: "Credits & Acknowledgments",
+      subtitle: "This project stands on the shoulders of giants",
+      disclaimer: "Important Disclaimer",
+      disclaimerText:
+        "QueueAdvisor is an independent MVP project that aggregates publicly available information. All credits go to the original creators and maintainers of the technologies and documentation referenced here.",
+
+      awsCredits: "AWS Services",
+      awsCreditsDesc:
+        "Amazon SQS, Amazon MSK, and all AWS services are trademarks of Amazon Web Services, Inc. All AWS documentation and pricing information is property of AWS.",
+
+      mcpCredits: "Model Context Protocol (MCP)",
+      mcpCreditsDesc:
+        "MCP is developed and maintained by AWS Labs. All MCP documentation, code, and resources are property of their respective authors at AWS.",
+
+      communityCredits: "Community & Open Source",
+      communityCreditsDesc:
+        "This project uses open-source libraries and frameworks including Next.js, React, Tailwind CSS, Radix UI, Recharts, and many others. Thanks to all maintainers and contributors.",
+
+      contribute: "Want to Contribute?",
+      contributeText:
+        "This is an open-source MVP project and we welcome contributions, feedback, and suggestions! Found a bug? Have an idea? Open an issue or submit a pull request on GitHub.",
+      githubRepo: "View on GitHub",
+      reportIssue: "Report an Issue",
+      submitPR: "Submit a Pull Request",
+
+      aboutCreator: "About the Creator",
+      creatorText:
+        "Fernando Francisco Azevedo is an AWS Solutions Architect and cloud enthusiast who created this tool to help developers make better architecture decisions. This is a personal project and learning experience, built as an MVP to aggregate AWS information in a helpful way.",
     },
   },
   pt: {
@@ -362,6 +398,7 @@ export const translations = {
       howItWorks: "Como Funciona",
       docs: "Documentação",
       faq: "Perguntas Frequentes",
+      credits: "Créditos",
     },
 
     // Documentation
@@ -371,6 +408,9 @@ export const translations = {
       awsResources: "Recursos AWS",
       architecturePatterns: "Padrões de Arquitetura",
       detailedComparison: "Comparação Detalhada",
+      mcpSection: "AWS Model Context Protocol (MCP)",
+      mcpIntro:
+        "Aprimore seus workflows AWS com o Model Context Protocol - um framework poderoso para operações cloud assistidas por IA e automação.",
 
       // SQS Resources
       sqsOverview: "Guia do Desenvolvedor Amazon SQS",
@@ -495,10 +535,10 @@ export const translations = {
       technicalCategory: "Técnico",
 
       q1: "O que é o QueueAdvisor?",
-      a1: "QueueAdvisor é uma ferramenta gratuita que ajuda você a escolher entre Amazon SQS e Apache Kafka (MSK) baseado em seus requisitos técnicos, volume de mensagens e orçamento. Usa dados de preços reais da AWS e melhores práticas para fornecer recomendações personalizadas.",
+      a1: "QueueAdvisor é uma ferramenta MVP gratuita e open-source que agrega informações e melhores práticas da AWS para ajudá-lo a escolher entre Amazon SQS e Apache Kafka (MSK). Este projeto combina documentações e recursos existentes em uma ferramenta útil de decisão.",
 
       q2: "O QueueAdvisor é afiliado à AWS?",
-      a2: "Não, QueueAdvisor é uma ferramenta independente criada por Fernando Moretes. Usa informações de preços e documentação da AWS disponíveis publicamente para ajudar desenvolvedores a tomar decisões informadas.",
+      a2: "Não, QueueAdvisor é um projeto MVP independente. Todos os serviços AWS, MCP e documentações são propriedade de seus respectivos donos. Esta ferramenta simplesmente agrega informações disponíveis publicamente para ajudar desenvolvedores a tomar decisões informadas.",
 
       q3: "Quão precisas são as recomendações?",
       a3: "As recomendações são baseadas em melhores práticas da AWS, documentação oficial e casos de uso do mundo real. No entanto, cada arquitetura é única, então recomendamos usar o QueueAdvisor como ponto de partida e consultar arquitetos AWS para implantações em produção.",
@@ -528,6 +568,38 @@ export const translations = {
       resource2Desc: "Estime custos para sua infraestrutura AWS",
       resource3Title: "AWS Free Tier",
       resource3Desc: "Aprenda sobre limites do nível gratuito para SQS e MSK",
+    },
+
+    // Credits & Contributions
+    credits: {
+      title: "Créditos e Agradecimentos",
+      subtitle: "Este projeto está sobre os ombros de gigantes",
+      disclaimer: "Aviso Importante",
+      disclaimerText:
+        "QueueAdvisor é um projeto MVP independente que agrega informações disponíveis publicamente. Todos os créditos vão para os criadores e mantenedores originais das tecnologias e documentações referenciadas aqui.",
+
+      awsCredits: "Serviços AWS",
+      awsCreditsDesc:
+        "Amazon SQS, Amazon MSK e todos os serviços AWS são marcas registradas da Amazon Web Services, Inc. Todas as documentações e informações de preços da AWS são propriedade da AWS.",
+
+      mcpCredits: "Model Context Protocol (MCP)",
+      mcpCreditsDesc:
+        "MCP é desenvolvido e mantido pela AWS Labs. Todas as documentações, código e recursos do MCP são propriedade de seus respectivos autores na AWS.",
+
+      communityCredits: "Comunidade e Open Source",
+      communityCreditsDesc:
+        "Este projeto usa bibliotecas e frameworks open-source incluindo Next.js, React, Tailwind CSS, Radix UI, Recharts e muitos outros. Obrigado a todos os mantenedores e contribuidores.",
+
+      contribute: "Quer Contribuir?",
+      contributeText:
+        "Este é um projeto MVP open-source e recebemos contribuições, feedback e sugestões! Encontrou um bug? Tem uma ideia? Abra uma issue ou envie um pull request no GitHub.",
+      githubRepo: "Ver no GitHub",
+      reportIssue: "Reportar um Problema",
+      submitPR: "Enviar um Pull Request",
+
+      aboutCreator: "Sobre o Criador",
+      creatorText:
+        "Fernando Francisco Azevedo é um Arquiteto de Soluções AWS e entusiasta de cloud que criou esta ferramenta para ajudar desenvolvedores a tomar melhores decisões de arquitetura. Este é um projeto pessoal e experiência de aprendizado, construído como um MVP para agregar informações da AWS de forma útil.",
     },
   },
 }

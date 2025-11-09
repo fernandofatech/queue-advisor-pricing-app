@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ExternalLink, Book, Database, Zap, Shield, Code2 } from "lucide-react"
+import { ExternalLink, Book, Database, Zap, Shield, Code2, Bot, Sparkles } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
 
@@ -108,18 +108,26 @@ export function DocsContent({ locale }: DocsContentProps) {
         </div>
 
         <Tabs defaultValue="resources" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
             <TabsTrigger value="resources">
               <Book className="h-4 w-4 mr-2" />
-              {t.docs.awsResources}
+              <span className="hidden sm:inline">{t.docs.awsResources}</span>
+              <span className="sm:hidden">Resources</span>
             </TabsTrigger>
             <TabsTrigger value="patterns">
               <Code2 className="h-4 w-4 mr-2" />
-              {t.docs.architecturePatterns}
+              <span className="hidden sm:inline">{t.docs.architecturePatterns}</span>
+              <span className="sm:hidden">Patterns</span>
+            </TabsTrigger>
+            <TabsTrigger value="mcp">
+              <Bot className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">MCP</span>
+              <span className="sm:hidden">MCP</span>
             </TabsTrigger>
             <TabsTrigger value="comparison">
               <Database className="h-4 w-4 mr-2" />
-              {t.docs.detailedComparison}
+              <span className="hidden sm:inline">{t.docs.detailedComparison}</span>
+              <span className="sm:hidden">Compare</span>
             </TabsTrigger>
           </TabsList>
 
@@ -184,6 +192,187 @@ export function DocsContent({ locale }: DocsContentProps) {
                 </Card>
               </motion.div>
             ))}
+          </TabsContent>
+
+          <TabsContent value="mcp" className="space-y-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <Card className="p-6 border-brand-primary/30 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
+                <div className="flex items-center gap-3 mb-4">
+                  <Bot className="h-8 w-8 text-brand-primary" />
+                  <div>
+                    <h2 className="text-2xl font-bold">{t.docs.mcpSection}</h2>
+                    <p className="text-sm text-muted-foreground mt-1">{t.docs.mcpIntro}</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Sparkles className="h-6 w-6 text-brand-secondary" />
+                  <h3 className="text-xl font-bold">
+                    {locale === "pt" ? "O que é o AWS MCP?" : "What is AWS MCP?"}
+                  </h3>
+                </div>
+                <div className="space-y-4 text-muted-foreground">
+                  <p>
+                    {locale === "pt"
+                      ? "O Model Context Protocol (MCP) da AWS é um framework inovador que permite integrar ferramentas de IA e automação com seus recursos AWS. Ele fornece uma interface padronizada para que assistentes de IA interajam com serviços AWS de forma segura e eficiente."
+                      : "AWS Model Context Protocol (MCP) is an innovative framework that enables AI tools and automation to integrate with your AWS resources. It provides a standardized interface for AI assistants to interact with AWS services securely and efficiently."}
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4 pt-4">
+                    <div className="p-4 rounded-lg bg-brand-primary/5 border border-brand-primary/20">
+                      <h4 className="font-semibold text-foreground mb-2">
+                        ✨ {locale === "pt" ? "Principais Benefícios" : "Key Benefits"}
+                      </h4>
+                      <ul className="text-sm space-y-1">
+                        <li>
+                          • {locale === "pt" ? "Automação inteligente de tarefas AWS" : "Intelligent AWS task automation"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Decisões arquiteturais assistidas por IA"
+                            : "AI-assisted architectural decisions"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Análise de custos em tempo real"
+                            : "Real-time cost analysis"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Otimização de recursos cloud"
+                            : "Cloud resource optimization"}
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="p-4 rounded-lg bg-brand-secondary/5 border border-brand-secondary/20">
+                      <h4 className="font-semibold text-foreground mb-2">
+                        🔧 {locale === "pt" ? "Casos de Uso" : "Use Cases"}
+                      </h4>
+                      <ul className="text-sm space-y-1">
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Comparação automática de serviços"
+                            : "Automatic service comparison"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Análise de arquitetura serverless"
+                            : "Serverless architecture analysis"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Recomendações de otimização"
+                            : "Optimization recommendations"}
+                        </li>
+                        <li>
+                          •{" "}
+                          {locale === "pt"
+                            ? "Documentação gerada por IA"
+                            : "AI-generated documentation"}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Code2 className="h-6 w-6 text-brand-primary" />
+                  <h3 className="text-xl font-bold">
+                    {locale === "pt" ? "Recursos e Links Oficiais" : "Official Resources & Links"}
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <a
+                    href="https://github.com/awslabs/mcp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-4 rounded-lg border border-border hover:border-brand-primary transition-all hover:bg-brand-primary/5 group"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-1 group-hover:text-brand-primary transition-colors flex items-center gap-2">
+                          AWS MCP GitHub Repository
+                          <ExternalLink className="h-4 w-4" />
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {locale === "pt"
+                            ? "Código-fonte oficial, exemplos e documentação técnica do AWS MCP"
+                            : "Official source code, examples and technical documentation for AWS MCP"}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="https://awslabs.github.io/mcp/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-4 rounded-lg border border-border hover:border-brand-primary transition-all hover:bg-brand-primary/5 group"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-1 group-hover:text-brand-primary transition-colors flex items-center gap-2">
+                          AWS MCP Documentation
+                          <ExternalLink className="h-4 w-4" />
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {locale === "pt"
+                            ? "Documentação completa, guias de início rápido e melhores práticas"
+                            : "Complete documentation, quickstart guides and best practices"}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Card className="p-6 bg-gradient-to-br from-brand-secondary/10 to-brand-primary/10 border-brand-primary/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-brand-primary/10">
+                    <Bot className="h-6 w-6 text-brand-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      💡{" "}
+                      {locale === "pt"
+                        ? "Dica: Integre MCP com QueueAdvisor"
+                        : "Tip: Integrate MCP with QueueAdvisor"}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {locale === "pt"
+                        ? "Use o AWS MCP para automatizar análises de mensageria em seus projetos. Você pode integrar este QueueAdvisor com o MCP para obter recomendações automatizadas sobre SQS vs Kafka diretamente em seu fluxo de trabalho de desenvolvimento."
+                        : "Use AWS MCP to automate messaging analysis in your projects. You can integrate this QueueAdvisor with MCP to get automated SQS vs Kafka recommendations directly in your development workflow."}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="comparison">

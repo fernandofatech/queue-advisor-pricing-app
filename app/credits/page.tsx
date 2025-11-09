@@ -2,10 +2,10 @@
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { DocsContent } from "@/components/docs-content"
+import { CreditsContent } from "@/components/credits-content"
 import { useLocale } from "@/hooks/use-locale"
 
-export default function DocsPage() {
+export default function CreditsPage() {
   const { locale, setLocale, isLoaded } = useLocale()
 
   if (!isLoaded) {
@@ -15,7 +15,7 @@ export default function DocsPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header locale={locale} onLocaleChange={setLocale} />
-      <DocsContent locale={locale} />
+      <CreditsContent locale={locale} />
       <Footer locale={locale} />
     </main>
   )

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ServiceRadarChart } from "@/components/service-radar-chart"
 import { PricingTable } from "@/components/pricing-table"
 import { ExportShareMenu } from "@/components/export-share-menu"
-import { CheckCircle2, ExternalLink, AlertCircle, TrendingUp, Zap, DollarSign } from "lucide-react"
+import { CheckCircle2, ExternalLink, AlertCircle, TrendingUp, Zap, DollarSign, MapPin, Award } from "lucide-react"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
@@ -66,6 +66,56 @@ export function ResultsDisplay({ results, locale }: ResultsDisplayProps) {
           </div>
         </CardHeader>
       </Card>
+
+      {/* Region Information */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className="border-border bg-card/80 backdrop-blur">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-brand-primary" />
+              <CardTitle className="text-lg">
+                {locale === "pt" ? "Região Selecionada" : "Selected Region"}
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">{results.pricing.region.location.split(" ")[0]}</span>
+                <div>
+                  <p className="font-semibold text-foreground">{results.pricing.region.name}</p>
+                  <p className="text-sm text-muted-foreground">{results.pricing.region.code}</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {results.bestRegion && results.pricing.region.code !== results.bestRegion.region.code && (
+          <Card className="border-brand-secondary/30 bg-gradient-to-br from-brand-secondary/10 to-brand-secondary/5 backdrop-blur">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-brand-secondary" />
+                <CardTitle className="text-lg">
+                  {locale === "pt" ? "Região Recomendada" : "Recommended Region"}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{results.bestRegion.region.location.split(" ")[0]}</span>
+                  <div>
+                    <p className="font-semibold text-foreground">{results.bestRegion.region.name}</p>
+                    <p className="text-sm text-muted-foreground">{results.bestRegion.region.code}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">{results.bestRegion.reason}</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
       <div className="grid md:grid-cols-3 gap-4">
         <Card className="border-border bg-card/80 backdrop-blur">

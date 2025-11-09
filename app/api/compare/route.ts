@@ -1,12 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getAwsPricing } from "@/lib/aws-pricing"
+import { getAwsPricing, getBestPricingRegion, type AwsRegion } from "@/lib/aws-pricing"
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.json()
 
-    // Fetch AWS pricing data
-    const pricing = await getAwsPricing()
+    // Extract region from form data
+    const region: AwsRegion = formData.region || "us-east-1"
+
+    // Fetch AWS pricing data for selected region
+    const pricing = await getAwsPricing(region)
 
     // Extract and normalize form data
     const messagesPerMonth = Number.parseInt(formData.messagesPerMonth) || 0
@@ -15,6 +18,9 @@ export async function POST(request: NextRequest) {
     const messageLossTolerance = formData.messageLossTolerance
     const isMulticloud = formData.environment === "multicloud"
     const monthlyBudget = Number.parseInt(formData.monthlyBudget) || 0
+
+    // Get best pricing region recommendation
+    const bestRegion = getBestPricingRegion(messagesPerMonth)
 
     let recommendation = "Amazon SQS"
     let explanation = ""
@@ -93,6 +99,7 @@ export async function POST(request: NextRequest) {
       explanation,
       radarData,
       pricing,
+      bestRegion,
     })
   } catch (error) {
     console.error("[v0] Error in compare API:", error)

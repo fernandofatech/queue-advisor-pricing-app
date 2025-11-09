@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ResultsDisplay } from "@/components/results-display"
-import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check } from "lucide-react"
+import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe } from "lucide-react"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
+import { AWS_REGIONS, type AwsRegion } from "@/lib/aws-pricing"
 
 interface ComparisonFormProps {
   locale: Locale
@@ -26,6 +27,7 @@ const presets = {
     replayNeeded: "no",
     monthlyBudget: 200,
     environment: "aws",
+    region: "us-east-1" as AwsRegion,
   },
   eventStreaming: {
     messagesPerMonth: 50000000,
@@ -34,6 +36,7 @@ const presets = {
     replayNeeded: "yes",
     monthlyBudget: 1000,
     environment: "aws",
+    region: "us-east-1" as AwsRegion,
   },
   costEffective: {
     messagesPerMonth: 1000000,
@@ -42,6 +45,7 @@ const presets = {
     replayNeeded: "no",
     monthlyBudget: 50,
     environment: "aws",
+    region: "us-east-1" as AwsRegion,
   },
   highThroughput: {
     messagesPerMonth: 100000000,
@@ -50,6 +54,7 @@ const presets = {
     replayNeeded: "yes",
     monthlyBudget: 2000,
     environment: "aws",
+    region: "us-east-1" as AwsRegion,
   },
 }
 
@@ -68,6 +73,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
     replayNeeded: "no",
     monthlyBudget: 200,
     environment: "aws",
+    region: "us-east-1",
   })
 
   const handlePresetSelect = (presetKey: string) => {
@@ -346,6 +352,46 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                         label={t.multicloud}
                         description={t.multicloudDesc}
                       />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-brand-primary" />
+                      <Label className="text-base font-semibold">
+                        {locale === "pt" ? "Região da AWS" : "AWS Region"}
+                      </Label>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {locale === "pt"
+                        ? "Selecione a região da AWS para ver preços regionais"
+                        : "Select AWS region to see regional pricing"}
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {Object.values(AWS_REGIONS).map((region) => (
+                        <button
+                          key={region.code}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, region: region.code })}
+                          className={cn(
+                            "relative p-3 rounded-lg border-2 text-left transition-all hover:shadow-md",
+                            formData.region === region.code
+                              ? "border-brand-primary bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10"
+                              : "border-border bg-card hover:border-brand-primary/30",
+                          )}
+                        >
+                          <div className="space-y-1">
+                            <div className="text-lg">{region.location.split(" ")[0]}</div>
+                            <div className={cn("text-xs font-medium", formData.region === region.code ? "text-brand-primary" : "text-foreground")}>
+                              {region.code}
+                            </div>
+                            <div className="text-xs text-muted-foreground truncate">{region.location.split(" ").slice(1).join(" ")}</div>
+                          </div>
+                          {formData.region === region.code && (
+                            <Check className="absolute top-2 right-2 h-4 w-4 text-brand-primary" />
+                          )}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </motion.div>

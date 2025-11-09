@@ -1,30 +1,90 @@
-# QueueAdvisor pricing app
+# QueueAdvisor
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://queueadvisor.fernando.moretes.com)
+[![Open Source](https://img.shields.io/badge/Open-Source-green?style=for-the-badge)](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge)](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/issues)
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/fernando-francisco-azevedos-projects/v0-queue-advisor-pricing-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/dzRFkt9pas0)
+> 🚀 **Open Source MVP** - An independent tool that aggregates AWS information to help you choose between Amazon SQS and Apache Kafka (MSK)
 
-## Overview
+## About This Project
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+**QueueAdvisor** is an open-source MVP project that combines existing AWS documentation, pricing information, and best practices into a helpful decision-making tool. Built by AWS Solutions Architect Fernando Francisco Azevedo as a learning experience and community contribution.
 
-## Deployment
+### Important Disclaimer
 
-Your project is live at:
+⚠️ **This is an independent project** that aggregates publicly available information. All AWS services, Model Context Protocol (MCP), and documentation are property of their respective owners. This tool simply combines existing resources to help with architecture decisions.
 
-**[https://vercel.com/fernando-francisco-azevedos-projects/v0-queue-advisor-pricing-app](https://vercel.com/fernando-francisco-azevedos-projects/v0-queue-advisor-pricing-app)**
+## Features
 
-## Build your app
+- 🌎 **9 AWS Regions** with real pricing data
+- 📊 **Visual Comparisons** between SQS and Kafka/MSK
+- 🤖 **MCP Integration Resources** and tips
+- 🌐 **Bilingual Support** (English/Portuguese)
+- 📱 **Responsive Design** for all devices
+- 🎯 **Decision Algorithm** based on AWS best practices
 
-Continue building your app on:
+## Credits
 
-**[https://v0.app/chat/dzRFkt9pas0](https://v0.app/chat/dzRFkt9pas0)**
+All credits go to:
+- **AWS** - Amazon SQS, Amazon MSK, and all AWS services
+- **AWS Labs** - Model Context Protocol (MCP)
+- **Apache Software Foundation** - Apache Kafka
+- **Open Source Community** - Next.js, React, TypeScript, Tailwind CSS, and many other libraries
 
-## How It Works
+## Tech Stack
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 4
+- **Components**: Radix UI
+- **Charts**: Recharts
+- **Animations**: Framer Motion
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the app.
+
+## Contributing
+
+This is an open-source project and **contributions are welcome**!
+
+- 🐛 Found a bug? [Open an issue](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/issues)
+- 💡 Have an idea? [Start a discussion](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/discussions)
+- 🔧 Want to contribute? [Submit a pull request](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/pulls)
+
+## Project Goals
+
+This MVP was created to:
+1. **Aggregate AWS Information** - Combine scattered documentation into one place
+2. **Learn and Share** - Personal learning experience shared with the community
+3. **Help Developers** - Make architecture decisions easier
+4. **Promote MCP** - Share resources about AWS Model Context Protocol
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Contact
+
+**Fernando Francisco Azevedo**
+- Portfolio: [fernando.moretes.com](https://fernando.moretes.com)
+- GitHub: [@fernandoazevedomoretes](https://github.com/fernandoazevedomoretes)
+- LinkedIn: [fernando-francisco-azevedo](https://www.linkedin.com/in/fernando-francisco-azevedo)
+
+---
+
+**Note**: This project aggregates information from AWS and other sources. Always consult official AWS documentation and architects for production deployments.
