@@ -1,0 +1,246 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ExternalLink, Book, Database, Zap, Shield, Code2 } from "lucide-react"
+import type { Locale } from "@/lib/i18n"
+import { useTranslation } from "@/lib/i18n"
+
+interface DocsContentProps {
+  locale: Locale
+}
+
+export function DocsContent({ locale }: DocsContentProps) {
+  const t = useTranslation(locale)
+
+  const awsResources = [
+    {
+      title: "Amazon SQS",
+      icon: Database,
+      resources: [
+        {
+          name: t.docs.sqsOverview,
+          url: "https://docs.aws.amazon.com/sqs/",
+          description: t.docs.sqsOverviewDesc,
+        },
+        {
+          name: t.docs.sqsPricing,
+          url: "https://aws.amazon.com/sqs/pricing/",
+          description: t.docs.sqsPricingDesc,
+        },
+        {
+          name: t.docs.sqsBestPractices,
+          url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-best-practices.html",
+          description: t.docs.sqsBestPracticesDesc,
+        },
+        {
+          name: t.docs.sqsFifo,
+          url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html",
+          description: t.docs.sqsFifoDesc,
+        },
+      ],
+    },
+    {
+      title: "Amazon MSK (Managed Streaming for Apache Kafka)",
+      icon: Zap,
+      resources: [
+        {
+          name: t.docs.mskOverview,
+          url: "https://docs.aws.amazon.com/msk/",
+          description: t.docs.mskOverviewDesc,
+        },
+        {
+          name: t.docs.mskPricing,
+          url: "https://aws.amazon.com/msk/pricing/",
+          description: t.docs.mskPricingDesc,
+        },
+        {
+          name: t.docs.mskBestPractices,
+          url: "https://docs.aws.amazon.com/msk/latest/developerguide/bestpractices.html",
+          description: t.docs.mskBestPracticesDesc,
+        },
+        {
+          name: t.docs.kafkaDoc,
+          url: "https://kafka.apache.org/documentation/",
+          description: t.docs.kafkaDocDesc,
+        },
+      ],
+    },
+  ]
+
+  const architecturePatterns = [
+    {
+      title: t.docs.microservicesPattern,
+      description: t.docs.microservicesPatternDesc,
+      bestFor: "SQS",
+      icon: Code2,
+    },
+    {
+      title: t.docs.eventSourcingPattern,
+      description: t.docs.eventSourcingPatternDesc,
+      bestFor: "Kafka/MSK",
+      icon: Database,
+    },
+    {
+      title: t.docs.cqrsPattern,
+      description: t.docs.cqrsPatternDesc,
+      bestFor: "Kafka/MSK",
+      icon: Zap,
+    },
+    {
+      title: t.docs.taskQueuePattern,
+      description: t.docs.taskQueuePatternDesc,
+      bestFor: "SQS",
+      icon: Shield,
+    },
+  ]
+
+  return (
+    <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-teal-light to-accent bg-clip-text text-transparent">
+            {t.docs.title}
+          </h1>
+          <p className="text-muted-foreground text-lg">{t.docs.subtitle}</p>
+        </div>
+
+        <Tabs defaultValue="resources" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="resources">
+              <Book className="h-4 w-4 mr-2" />
+              {t.docs.awsResources}
+            </TabsTrigger>
+            <TabsTrigger value="patterns">
+              <Code2 className="h-4 w-4 mr-2" />
+              {t.docs.architecturePatterns}
+            </TabsTrigger>
+            <TabsTrigger value="comparison">
+              <Database className="h-4 w-4 mr-2" />
+              {t.docs.detailedComparison}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="resources" className="space-y-8">
+            {awsResources.map((section, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <section.icon className="h-6 w-6 text-teal-light" />
+                    <h2 className="text-2xl font-bold">{section.title}</h2>
+                  </div>
+                  <div className="space-y-4">
+                    {section.resources.map((resource, ridx) => (
+                      <a
+                        key={ridx}
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-4 rounded-lg border border-border hover:border-teal-light transition-all hover:bg-accent/5 group"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <h3 className="font-semibold mb-1 group-hover:text-teal-light transition-colors flex items-center gap-2">
+                              {resource.name}
+                              <ExternalLink className="h-4 w-4" />
+                            </h3>
+                            <p className="text-sm text-muted-foreground">{resource.description}</p>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="patterns" className="space-y-6">
+            {architecturePatterns.map((pattern, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <Card className="p-6">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <pattern.icon className="h-6 w-6 text-teal-light" />
+                      <h3 className="text-xl font-bold">{pattern.title}</h3>
+                    </div>
+                    <Badge variant={pattern.bestFor === "SQS" ? "secondary" : "default"}>
+                      {t.docs.bestFor}: {pattern.bestFor}
+                    </Badge>
+                  </div>
+                  <p className="text-muted-foreground">{pattern.description}</p>
+                </Card>
+              </motion.div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="comparison">
+            <Card className="p-6">
+              <h2 className="text-2xl font-bold mb-6">{t.docs.sqsVsKafka}</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left p-4 font-semibold">{t.docs.feature}</th>
+                      <th className="text-left p-4 font-semibold">Amazon SQS</th>
+                      <th className="text-left p-4 font-semibold">Apache Kafka (MSK)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.messageOrdering}</td>
+                      <td className="p-4">{t.docs.sqsOrdering}</td>
+                      <td className="p-4">{t.docs.kafkaOrdering}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.messageRetention}</td>
+                      <td className="p-4">{t.docs.sqsRetention}</td>
+                      <td className="p-4">{t.docs.kafkaRetention}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.throughput}</td>
+                      <td className="p-4">{t.docs.sqsThroughput}</td>
+                      <td className="p-4">{t.docs.kafkaThroughput}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.replayCapability}</td>
+                      <td className="p-4">{t.docs.sqsReplay}</td>
+                      <td className="p-4">{t.docs.kafkaReplay}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.infrastructure}</td>
+                      <td className="p-4">{t.docs.sqsInfrastructure}</td>
+                      <td className="p-4">{t.docs.kafkaInfrastructure}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.pricing}</td>
+                      <td className="p-4">{t.docs.sqsPricingModel}</td>
+                      <td className="p-4">{t.docs.kafkaPricingModel}</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">{t.docs.useCase}</td>
+                      <td className="p-4">{t.docs.sqsUseCase}</td>
+                      <td className="p-4">{t.docs.kafkaUseCase}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </motion.div>
+    </div>
+  )
+}
