@@ -131,7 +131,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
           {currentStep > 0 && (
             <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden mt-4">
               <motion.div
-                className="h-full bg-gradient-to-r from-teal-dark to-teal-darker"
+                className="h-full bg-gradient-to-r from-brand-primary to-brand-secondary"
                 initial={{ width: "0%" }}
                 animate={{ width: `${(currentStep / 3) * 100}%` }}
                 transition={{ duration: 0.3 }}
@@ -219,7 +219,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <Label className="text-base font-semibold">{t.messagesLabel}</Label>
-                      <span className="text-2xl font-bold text-teal-dark tabular-nums">
+                      <span className="text-2xl font-bold text-brand-primary tabular-nums">
                         {formatNumber(formData.messagesPerMonth)}
                       </span>
                     </div>
@@ -240,7 +240,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <Label className="text-base font-semibold">{t.budgetLabel}</Label>
-                      <span className="text-2xl font-bold text-teal-dark tabular-nums">
+                      <span className="text-2xl font-bold text-brand-secondary tabular-nums">
                         ${formatNumber(formData.monthlyBudget)}
                       </span>
                     </div>
@@ -364,7 +364,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                 <Button
                   type="button"
                   onClick={nextStep}
-                  className="ml-auto gap-2 bg-gradient-to-r from-teal-dark to-teal-darker hover:from-teal-darker hover:to-teal-dark text-white"
+                  className="ml-auto gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all"
                 >
                   {t.next}
                   <ChevronRight className="h-4 w-4" />
@@ -374,7 +374,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
               {currentStep === 3 && (
                 <Button
                   type="submit"
-                  className="ml-auto gap-2 bg-gradient-to-r from-teal-dark to-teal-darker hover:from-teal-darker hover:to-teal-dark text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                  className="ml-auto gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -416,16 +416,25 @@ function PresetCard({ icon, title, description, features, onClick, selected }: P
       onClick={onClick}
       className={cn(
         "relative p-5 rounded-lg border-2 text-left transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
-        selected ? "border-teal-dark bg-teal-dark/5 shadow-md" : "border-border bg-card hover:border-teal-dark/50",
+        selected
+          ? "border-brand-primary bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 shadow-md"
+          : "border-border bg-card hover:border-brand-primary/50",
       )}
     >
       {selected && (
-        <div className="absolute top-3 right-3 h-6 w-6 rounded-full bg-teal-dark flex items-center justify-center">
+        <div className="absolute top-3 right-3 h-6 w-6 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-md">
           <Check className="h-4 w-4 text-white" />
         </div>
       )}
       <div className="flex items-center gap-3 mb-3">
-        <div className={cn("p-2 rounded-lg", selected ? "bg-teal-dark text-white" : "bg-muted text-muted-foreground")}>
+        <div
+          className={cn(
+            "p-2 rounded-lg transition-all",
+            selected
+              ? "bg-gradient-to-br from-brand-primary to-brand-secondary text-white shadow-sm"
+              : "bg-muted text-muted-foreground",
+          )}
+        >
           {icon}
         </div>
         <h3 className="font-semibold text-lg">{title}</h3>
@@ -434,7 +443,12 @@ function PresetCard({ icon, title, description, features, onClick, selected }: P
       <ul className="space-y-1.5">
         {features.map((feature, index) => (
           <li key={index} className="text-sm flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-teal-dark" />
+            <div
+              className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                selected ? "bg-gradient-to-br from-brand-primary to-brand-secondary" : "bg-muted-foreground",
+              )}
+            />
             {feature}
           </li>
         ))}
@@ -457,20 +471,24 @@ function OptionCard({ selected, onClick, label, description }: OptionCardProps) 
       onClick={onClick}
       className={cn(
         "relative p-4 rounded-lg border-2 text-left transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98]",
-        selected ? "border-teal-dark bg-teal-dark/5 shadow-sm" : "border-border bg-card hover:border-teal-dark/30",
+        selected
+          ? "border-brand-primary bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5 shadow-sm"
+          : "border-border bg-card hover:border-brand-primary/30",
       )}
     >
       <div className="flex items-center gap-3">
         <div
           className={cn(
             "h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all",
-            selected ? "border-teal-dark bg-teal-dark" : "border-muted-foreground",
+            selected ? "border-brand-primary bg-gradient-to-br from-brand-primary to-brand-secondary" : "border-muted-foreground",
           )}
         >
           {selected && <div className="h-2 w-2 rounded-full bg-white" />}
         </div>
         <div className="flex-1">
-          <span className={cn("font-medium", selected && "text-teal-dark")}>{label}</span>
+          <span className={cn("font-medium", selected && "bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent")}>
+            {label}
+          </span>
           {description && <p className="text-xs text-muted-foreground mt-0.5">{description}</p>}
         </div>
       </div>
