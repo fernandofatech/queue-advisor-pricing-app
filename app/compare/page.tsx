@@ -4,9 +4,12 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Trash2, ArrowLeft, GitCompare } from "lucide-react"
+import { Trash2, ArrowLeft, GitCompare, Download, Share2, BarChart3 } from "lucide-react"
 import Link from "next/link"
 import type { ComparisonResult } from "@/types/comparison"
+import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts"
+import html2canvas from "html2canvas"
+import { toast } from "@/hooks/use-toast"
 
 interface SavedAnalysis extends ComparisonResult {
   savedAt: string
@@ -16,11 +19,74 @@ interface SavedAnalysis extends ComparisonResult {
 export default function ComparePage() {
   const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([])
   const [selectedAnalyses, setSelectedAnalyses] = useState<string[]>([])
+  const [showCharts, setShowCharts] = useState(true)
 
   useEffect(() => {
     const analyses = JSON.parse(localStorage.getItem("queueadvisor-analyses") || "[]")
     setSavedAnalyses(analyses)
   }, [])
+
+  const exportComparison = async () => {
+    try {
+      const comparisonElement = document.getElementById("comparison-content")
+      if (!comparisonElement) return
+
+      toast({
+        title: "Gerando imagem...",
+        description: "Por favor, aguarde"
+      })
+
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const canvas = await html2canvas(comparisonElement, {
+        backgroundColor: "#0a0a0a",
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      })
+
+      canvas.toBlob((blob) => {
+        if (!blob) return
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = `comparison-${Date.now()}.png`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+
+        toast({
+          title: "Exportação concluída!",
+          description: "Imagem salva com sucesso"
+        })
+      }, "image/png")
+    } catch (error) {
+      toast({
+        title: "Erro ao exportar",
+        variant: "destructive"
+      })
+    }
+  }
+
+  const shareComparison = () => {
+    const text = `Comparando ${selectedAnalyses.length} análises no QueueAdvisor`
+    const url = window.location.href
+
+    if (navigator.share) {
+      navigator.share({
+        title: "QueueAdvisor - Comparação",
+        text: text,
+        url: url
+      }).catch(() => {})
+    } else {
+      navigator.clipboard.writeText(url)
+      toast({
+        title: "Link copiado!",
+        description: "Cole para compartilhar"
+      })
+    }
+  }
 
   const handleDelete = (id: string) => {
     const filtered = savedAnalyses.filter((a) => a.id !== id)
@@ -135,7 +201,101 @@ export default function ComparePage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                id="comparison-content"
               >
+                <div className="flex justify-between items-center mb-4 no-print">
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => setShowCharts(!showCharts)}
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      <BarChart3 className="h-4 w-4" />
+                      {showCharts ? "Hide Charts" : "Show Charts"}
+                    </Button>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={exportComparison}
+                      className="gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
+                    >
+                      <Download className="h-4 w-4" />
+                      Export
+                    </Button>
+                    <Button
+                      onClick={shareComparison}
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </Button>
+                  </div>
+                </div>
+
+                {showCharts && (
+                  <div className="grid md:grid-cols-2 gap-6 mb-6">
+                    <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
+                      <CardHeader>
+                        <CardTitle>Metrics Comparison (Radar)</CardTitle>
+                        <CardDescription>Visual comparison across all metrics</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={350}>
+                          <RadarChart data={selectedAnalysesData[0]?.radarData || []}>
+                            <PolarGrid stroke="hsl(var(--border))" />
+                            <PolarAngleAxis dataKey="metric" stroke="hsl(var(--foreground))" />
+                            <PolarRadiusAxis angle={90} domain={[0, 10]} stroke="hsl(var(--muted-foreground))" />
+                            {selectedAnalysesData.map((analysis, idx) => (
+                              <Radar
+                                key={analysis.id}
+                                name={analysis.recommendation}
+                                dataKey={idx === 0 ? "sqs" : "kafka"}
+                                stroke={idx === 0 ? "hsl(var(--chart-2))" : idx === 1 ? "hsl(var(--chart-3))" : "hsl(var(--chart-4))"}
+                                fill={idx === 0 ? "hsl(var(--chart-2))" : idx === 1 ? "hsl(var(--chart-3))" : "hsl(var(--chart-4))"}
+                                fillOpacity={0.3}
+                              />
+                            ))}
+                            <Legend />
+                          </RadarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
+                      <CardHeader>
+                        <CardTitle>Cost Comparison (Bar)</CardTitle>
+                        <CardDescription>Monthly costs at 10M messages/month</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={350}>
+                          <BarChart
+                            data={selectedAnalysesData.map(analysis => ({
+                              name: analysis.recommendation.split(" ")[1] || analysis.recommendation,
+                              SQS: parseFloat(analysis.pricing.sqs["10M"].replace("$", "")),
+                              Kafka: parseFloat(analysis.pricing.kafka["10M"].replace("$", "")),
+                            }))}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                            <XAxis dataKey="name" stroke="hsl(var(--foreground))" />
+                            <YAxis stroke="hsl(var(--foreground))" />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "hsl(var(--card))",
+                                border: "1px solid hsl(var(--border))",
+                                borderRadius: "8px"
+                              }}
+                            />
+                            <Legend />
+                            <Bar dataKey="SQS" fill="hsl(var(--chart-2))" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="Kafka" fill="hsl(var(--chart-3))" radius={[8, 8, 0, 0]} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
                 <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
                   <CardHeader>
                     <CardTitle>Side-by-Side Comparison</CardTitle>

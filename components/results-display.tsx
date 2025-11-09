@@ -12,6 +12,7 @@ import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { toast } from "@/hooks/use-toast"
 
 interface ResultsDisplayProps {
   results: ComparisonResult
@@ -42,8 +43,14 @@ export function ResultsDisplay({ results, locale, onStartNewAnalysis }: ResultsD
 
     localStorage.setItem("queueadvisor-analyses", JSON.stringify(savedAnalyses))
 
-    // Show success message
-    alert(locale === "pt" ? "Análise salva com sucesso!" : "Analysis saved successfully!")
+    // Show beautiful success message
+    toast({
+      title: locale === "pt" ? "✓ Análise salva com sucesso!" : "✓ Analysis saved successfully!",
+      description: locale === "pt"
+        ? `Sua análise "${results.recommendation}" foi salva. Você pode visualizá-la na página Comparar.`
+        : `Your "${results.recommendation}" analysis has been saved. You can view it on the Compare page.`,
+      duration: 5000,
+    })
   }
 
   // Extract numeric values from pricing strings (e.g., "$0.40" -> 0.40)
@@ -73,7 +80,7 @@ export function ResultsDisplay({ results, locale, onStartNewAnalysis }: ResultsD
       transition={{ duration: 0.5 }}
       className="space-y-8"
     >
-      <div className="flex flex-wrap justify-between items-center gap-4">
+      <div className="flex flex-wrap justify-between items-center gap-4 no-print">
         <div className="flex flex-wrap gap-3">
           <Button
             onClick={() => {
@@ -107,10 +114,10 @@ export function ResultsDisplay({ results, locale, onStartNewAnalysis }: ResultsD
       </div>
 
       {/* Recommendation Card */}
-      <Card className="border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur shadow-xl">
+      <Card className="border-primary/30 bg-linear-to-br from-primary/10 to-primary/5 backdrop-blur shadow-xl">
         <CardHeader>
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+            <CheckCircle2 className="h-6 w-6 text-primary mt-1 shrink-0" />
             <div className="flex-1">
               <CardTitle className="text-2xl text-foreground">
                 {t.recommended}: {results.recommendation}
@@ -148,7 +155,7 @@ export function ResultsDisplay({ results, locale, onStartNewAnalysis }: ResultsD
         </Card>
 
         {results.bestRegion && results.pricing.region.code !== results.bestRegion.region.code && (
-          <Card className="border-brand-secondary/30 bg-gradient-to-br from-brand-secondary/10 to-brand-secondary/5 backdrop-blur">
+          <Card className="border-brand-secondary/30 bg-linear-to-br from-brand-secondary/10 to-brand-secondary/5 backdrop-blur">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-2">
                 <Award className="h-5 w-5 text-brand-secondary" />

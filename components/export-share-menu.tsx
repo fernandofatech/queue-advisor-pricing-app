@@ -112,28 +112,57 @@ Recommendation,${results.recommendation}
   const exportAsImage = async () => {
     try {
       const resultsElement = document.getElementById("results-container")
-      if (!resultsElement) return
+      if (!resultsElement) {
+        toast({
+          title: translations.exportError,
+          description: "Results container not found",
+          variant: "destructive"
+        })
+        return
+      }
+
+      // Show loading toast
+      toast({
+        title: locale === "pt" ? "Gerando imagem..." : "Generating image...",
+        description: locale === "pt" ? "Por favor, aguarde" : "Please wait"
+      })
+
+      // Wait a bit for any animations to complete
+      await new Promise(resolve => setTimeout(resolve, 500))
 
       const canvas = await html2canvas(resultsElement, {
-        backgroundColor: null,
+        backgroundColor: "#0a0a0a",
         scale: 2,
+        useCORS: true,
+        logging: false,
+        windowWidth: resultsElement.scrollWidth,
+        windowHeight: resultsElement.scrollHeight,
       })
 
       canvas.toBlob((blob) => {
-        if (!blob) return
+        if (!blob) {
+          toast({ title: translations.exportError, variant: "destructive" })
+          return
+        }
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")
         a.href = url
-        a.download = "queue-advisor-comparison.png"
+        a.download = `queueadvisor-${Date.now()}.png`
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)
         URL.revokeObjectURL(url)
-      })
 
-      toast({ title: translations.exportSuccess, description: translations.image })
+        toast({ title: translations.exportSuccess, description: translations.image })
+      }, "image/png")
+
     } catch (error) {
-      toast({ title: translations.exportError, variant: "destructive" })
+      console.error("Export error:", error)
+      toast({
+        title: translations.exportError,
+        description: locale === "pt" ? "Erro ao gerar imagem" : "Error generating image",
+        variant: "destructive"
+      })
     }
   }
 
