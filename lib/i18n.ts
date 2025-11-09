@@ -100,6 +100,14 @@ export const translations = {
     exportResults: "Export Results",
     shareResults: "Share Results",
 
+    // Free Tier warnings
+    freeTierWarningTitle: "⚠️ AWS Free Tier Notice",
+    freeTierWarningDesc: "Your current configuration may incur costs beyond the AWS Free Tier limits.",
+    freeTierSqsExceeds: "SQS Free Tier allows up to 1M messages/month. Your configuration uses {messages}M messages/month.",
+    freeTierMskNever: "MSK (Kafka) has no free tier and will cost approximately $460/month minimum (3 brokers).",
+    freeTierBudgetZero: "Your budget is set to $0, but this configuration will have costs. Consider adjusting your budget or reducing message volume.",
+    freeTierContinue: "You can continue with this configuration, but be aware of potential costs.",
+
     // Environment descriptions
     awsDesc: "AWS-only deployment",
     multicloudDesc: "Multi-cloud flexibility",
@@ -412,6 +420,14 @@ export const translations = {
     saveAnalysis: "Salvar Análise",
     exportResults: "Exportar Resultados",
     shareResults: "Compartilhar Resultados",
+
+    // Free Tier warnings
+    freeTierWarningTitle: "⚠️ Aviso sobre AWS Free Tier",
+    freeTierWarningDesc: "Sua configuração atual pode gerar custos além dos limites do AWS Free Tier.",
+    freeTierSqsExceeds: "O Free Tier do SQS permite até 1M mensagens/mês. Sua configuração usa {messages}M mensagens/mês.",
+    freeTierMskNever: "MSK (Kafka) não possui free tier e custará aproximadamente $460/mês no mínimo (3 brokers).",
+    freeTierBudgetZero: "Seu orçamento está definido como $0, mas esta configuração terá custos. Considere ajustar seu orçamento ou reduzir o volume de mensagens.",
+    freeTierContinue: "Você pode continuar com esta configuração, mas esteja ciente dos custos potenciais.",
 
     // Environment descriptions
     awsDesc: "Implantação somente AWS",

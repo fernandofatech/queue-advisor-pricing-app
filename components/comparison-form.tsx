@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ResultsDisplay } from "@/components/results-display"
-import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe, Gift, Settings } from "lucide-react"
+import { Loader2, ChevronRight, ChevronLeft, Sparkles, Zap, DollarSign, TrendingUp, Check, Globe, Gift, Settings, AlertTriangle } from "lucide-react"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
-import { AWS_REGIONS, type AwsRegion } from "@/lib/aws-pricing"
+import { AWS_REGIONS, type AwsRegion, checkFreeTierEligibility, AWS_FREE_TIER } from "@/lib/aws-pricing"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 interface ComparisonFormProps {
   locale: Locale
@@ -143,6 +144,10 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
     return num.toLocaleString(locale === "pt" ? "pt-BR" : "en-US")
   }
 
+  // Check Free Tier eligibility
+  const freeTierCheck = checkFreeTierEligibility(formData.messagesPerMonth, formData.monthlyBudget)
+  const showFreeTierWarning = freeTierCheck.warnings.length > 0
+
   return (
     <div className="space-y-8">
       <Card className="border-border bg-card/80 backdrop-blur shadow-lg overflow-hidden">
@@ -183,14 +188,22 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* AWS Free Tier Preset */}
-                    <PresetCard
-                      icon={<Gift className="h-5 w-5" />}
-                      title={t.presetFreeTier}
-                      description={t.presetFreeTierDesc}
-                      features={[`${formatNumber(500000)} ${t.messagesMonth}`, t.noOrdering, `$0 ${t.budget}`]}
-                      onClick={() => handlePresetSelect("freeTier")}
-                      selected={selectedPreset === "freeTier"}
-                    />
+                    <div className="relative">
+                      <div className="absolute -top-2 -right-2 z-10">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-500 border border-green-500/30 shadow-md">
+                          <Check className="h-3 w-3" />
+                          Free Tier
+                        </span>
+                      </div>
+                      <PresetCard
+                        icon={<Gift className="h-5 w-5" />}
+                        title={t.presetFreeTier}
+                        description={t.presetFreeTierDesc}
+                        features={[`${formatNumber(500000)} ${t.messagesMonth}`, t.noOrdering, `$0 ${t.budget}`]}
+                        onClick={() => handlePresetSelect("freeTier")}
+                        selected={selectedPreset === "freeTier"}
+                      />
+                    </div>
 
                     {/* Microservices Preset */}
                     <PresetCard
@@ -280,14 +293,28 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                         {formatNumber(formData.messagesPerMonth)}
                       </span>
                     </div>
-                    <Slider
-                      value={[formData.messagesPerMonth]}
-                      onValueChange={([value]) => setFormData({ ...formData, messagesPerMonth: value })}
-                      min={100000}
-                      max={200000000}
-                      step={100000}
-                      className="py-4"
-                    />
+                    <div className="relative">
+                      <Slider
+                        value={[formData.messagesPerMonth]}
+                        onValueChange={([value]) => setFormData({ ...formData, messagesPerMonth: value })}
+                        min={100000}
+                        max={200000000}
+                        step={100000}
+                        className="py-4"
+                      />
+                      {/* Free Tier Indicator Line */}
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-green-500 pointer-events-none"
+                        style={{ left: `${((AWS_FREE_TIER.SQS_MESSAGES_PER_MONTH - 100000) / (200000000 - 100000)) * 100}%` }}
+                        title="Free Tier Limit (1M messages/month)"
+                      >
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                          <span className="text-[10px] text-green-500 font-medium bg-background/80 px-1.5 py-0.5 rounded border border-green-500/30">
+                            Free Tier (1M)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <div className="flex justify-between text-xs text-muted-foreground">
                       <span>100K</span>
                       <span>200M</span>
@@ -314,6 +341,45 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                       <span>$5,000</span>
                     </div>
                   </div>
+
+                  {/* Free Tier Warning */}
+                  {showFreeTierWarning && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Alert className="border-amber-500/50 bg-amber-500/10">
+                        <AlertTriangle className="h-5 w-5 text-amber-500" />
+                        <AlertTitle className="text-amber-500 font-semibold">
+                          {t.freeTierWarningTitle}
+                        </AlertTitle>
+                        <AlertDescription className="text-sm space-y-2 mt-2">
+                          <p className="text-foreground/90">{t.freeTierWarningDesc}</p>
+                          <ul className="space-y-1.5 ml-4">
+                            {!freeTierCheck.sqsWithinFreeTier && (
+                              <li className="text-foreground/80 text-xs">
+                                • {t.freeTierSqsExceeds.replace('{messages}', (formData.messagesPerMonth / 1000000).toFixed(1))}
+                              </li>
+                            )}
+                            {formData.monthlyBudget === 0 && (
+                              <>
+                                <li className="text-foreground/80 text-xs">
+                                  • {t.freeTierMskNever}
+                                </li>
+                                <li className="text-foreground/80 text-xs">
+                                  • {t.freeTierBudgetZero}
+                                </li>
+                              </>
+                            )}
+                          </ul>
+                          <p className="text-foreground/70 text-xs mt-3 pt-2 border-t border-amber-500/20">
+                            ℹ️ {t.freeTierContinue}
+                          </p>
+                        </AlertDescription>
+                      </Alert>
+                    </motion.div>
+                  )}
                 </motion.div>
               )}
 

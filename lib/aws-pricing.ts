@@ -15,6 +15,14 @@ export interface RegionInfo {
   location: string
 }
 
+// AWS Free Tier Limits
+export const AWS_FREE_TIER = {
+  SQS_REQUESTS_PER_MONTH: 1000000, // 1 million requests/month
+  SQS_MESSAGES_PER_MONTH: 1000000, // Approximately 1 million messages
+  MSK_FREE_TIER: false, // MSK has no free tier
+  BUDGET_WARNING_THRESHOLD: 0, // Warn if budget is 0 but exceeds free tier
+} as const
+
 export interface PricingData {
   sqs: { "1M": string; "10M": string; "100M": string }
   kafka: { "1M": string; "10M": string; "100M": string }
@@ -116,5 +124,39 @@ export function getBestPricingRegion(messagesPerMonth: number): { region: Region
   return {
     region: AWS_REGIONS["us-east-1"],
     reason: "Most cost-effective for SQS workloads (same price across most US regions)",
+  }
+}
+
+// Check if configuration is within AWS Free Tier
+export function checkFreeTierEligibility(messagesPerMonth: number, monthlyBudget: number): {
+  withinFreeTier: boolean
+  sqsWithinFreeTier: boolean
+  mskWithinFreeTier: boolean
+  warnings: string[]
+} {
+  const warnings: string[] = []
+  const sqsWithinFreeTier = messagesPerMonth <= AWS_FREE_TIER.SQS_MESSAGES_PER_MONTH
+  const mskWithinFreeTier = false // MSK never has free tier
+
+  // Check SQS Free Tier
+  if (!sqsWithinFreeTier && monthlyBudget === 0) {
+    warnings.push("sqs_exceeds_free_tier")
+  }
+
+  // Check MSK (always has cost)
+  if (monthlyBudget === 0) {
+    warnings.push("msk_no_free_tier")
+  }
+
+  // General warning if budget is 0 but volume exceeds free tier
+  if (monthlyBudget === 0 && !sqsWithinFreeTier) {
+    warnings.push("budget_zero_with_cost")
+  }
+
+  return {
+    withinFreeTier: sqsWithinFreeTier && monthlyBudget >= 0,
+    sqsWithinFreeTier,
+    mskWithinFreeTier,
+    warnings,
   }
 }
