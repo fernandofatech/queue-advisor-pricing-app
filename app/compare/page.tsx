@@ -11,7 +11,8 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadius
 import { toast } from "@/hooks/use-toast"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import type { Locale } from "@/lib/i18n"
+import { useLocale } from "@/hooks/use-locale"
+import { useTranslation } from "@/lib/i18n"
 
 interface SavedAnalysis extends ComparisonResult {
   savedAt: string
@@ -22,28 +23,33 @@ export default function ComparePage() {
   const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([])
   const [selectedAnalyses, setSelectedAnalyses] = useState<string[]>([])
   const [showCharts, setShowCharts] = useState(true)
-  const [locale, setLocale] = useState<Locale>("en")
+  const { locale, setLocale, isLoaded } = useLocale()
+  const t = useTranslation(locale)
 
   useEffect(() => {
     const analyses = JSON.parse(localStorage.getItem("queueadvisor-analyses") || "[]")
     setSavedAnalyses(analyses)
   }, [])
 
+  if (!isLoaded) {
+    return null
+  }
+
   const shareComparison = () => {
-    const text = `Comparando ${selectedAnalyses.length} análises no QueueAdvisor`
+    const text = t.compare.comparingText.replace('{count}', selectedAnalyses.length.toString())
     const url = window.location.href
 
     if (navigator.share) {
       navigator.share({
-        title: "QueueAdvisor - Comparação",
+        title: "QueueAdvisor - " + t.compare.title,
         text: text,
         url: url
       }).catch(() => {})
     } else {
       navigator.clipboard.writeText(url)
       toast({
-        title: "Link copiado!",
-        description: "Cole para compartilhar"
+        title: t.compare.linkCopied,
+        description: t.compare.linkCopiedDesc
       })
     }
   }
@@ -76,20 +82,18 @@ export default function ComparePage() {
             <Link href="/">
               <Button variant="ghost" className="gap-2 mb-4 -ml-2">
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">{locale === "pt" ? "Voltar ao Início" : "Back to Home"}</span>
-                <span className="sm:hidden">{locale === "pt" ? "Voltar" : "Back"}</span>
+                <span className="hidden sm:inline">{t.compare.backToHome}</span>
+                <span className="sm:hidden">{t.compare.back}</span>
               </Button>
             </Link>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
               <GitCompare className="h-6 w-6 sm:h-8 sm:w-8 text-brand-primary" />
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-linear-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-                {locale === "pt" ? "Comparar Análises" : "Compare Analyses"}
+                {t.compare.title}
               </h1>
             </div>
             <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
-              {locale === "pt"
-                ? "Selecione de 1 a 3 análises para visualizar e comparar"
-                : "Select 1 to 3 analyses to view and compare"}
+              {t.compare.subtitle}
             </p>
           </motion.div>
 
@@ -97,13 +101,11 @@ export default function ComparePage() {
           <Card className="border-border bg-card/80 backdrop-blur">
             <CardContent className="pt-8 pb-8 sm:pt-12 sm:pb-12 text-center px-4">
               <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
-                {locale === "pt"
-                  ? "Nenhuma análise salva ainda. Execute uma comparação e salve para ver aqui!"
-                  : "No saved analyses yet. Run a comparison and save it to see it here!"}
+                {t.compare.noAnalyses}
               </p>
               <Link href="/">
                 <Button className="mt-4 gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-sm sm:text-base">
-                  {locale === "pt" ? "Iniciar Nova Análise" : "Start New Analysis"}
+                  {t.compare.startNewAnalysis}
                 </Button>
               </Link>
             </CardContent>
@@ -151,15 +153,15 @@ export default function ComparePage() {
                   <CardContent className="pb-4">
                     <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Region:</span>
+                        <span className="text-muted-foreground">{t.compare.region}:</span>
                         <span className="font-medium">{analysis.pricing.region.code}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">SQS Cost:</span>
+                        <span className="text-muted-foreground">{t.compare.sqsCost}:</span>
                         <span className="font-medium">{analysis.pricing.sqs["10M"]}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Kafka Cost:</span>
+                        <span className="text-muted-foreground">{t.compare.kafkaCost}:</span>
                         <span className="font-medium">{analysis.pricing.kafka["10M"]}</span>
                       </div>
                     </div>
@@ -182,12 +184,10 @@ export default function ComparePage() {
                   >
                     <BarChart3 className="h-4 w-4" />
                     <span className="hidden sm:inline">
-                      {showCharts
-                        ? (locale === "pt" ? "Ocultar Gráficos" : "Hide Charts")
-                        : (locale === "pt" ? "Mostrar Gráficos" : "Show Charts")}
+                      {showCharts ? t.compare.hideCharts : t.compare.showCharts}
                     </span>
                     <span className="sm:hidden">
-                      {showCharts ? (locale === "pt" ? "Ocultar" : "Hide") : (locale === "pt" ? "Mostrar" : "Show")}
+                      {showCharts ? t.compare.hide : t.compare.show}
                     </span>
                   </Button>
                   <Button
@@ -196,8 +196,96 @@ export default function ComparePage() {
                     className="gap-2 w-full sm:w-auto"
                   >
                     <Share2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">{locale === "pt" ? "Compartilhar" : "Share"}</span>
+                    <span className="hidden sm:inline">{t.compare.share}</span>
                   </Button>
+                </div>
+
+                {/* Cost Summary Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  {selectedAnalysesData.map((analysis) => {
+                    const sqsCost = parseFloat(analysis.pricing.sqs["10M"].replace("$", "").replace(",", ""))
+                    const kafkaCost = parseFloat(analysis.pricing.kafka["10M"].replace("$", "").replace(",", ""))
+                    const savings = Math.abs(sqsCost - kafkaCost)
+                    const sqsCheaper = sqsCost < kafkaCost
+                    const savingsPercent = ((savings / Math.max(sqsCost, kafkaCost)) * 100).toFixed(0)
+
+                    return (
+                      <Card key={analysis.id} className="border-border bg-card/80 backdrop-blur shadow-lg">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1">
+                              <CardDescription className="text-xs mb-1">{t.compare.costSummary}</CardDescription>
+                              <CardTitle className="text-lg sm:text-xl truncate">
+                                {analysis.recommendation}
+                              </CardTitle>
+                            </div>
+                            <div className={`px-2 py-1 rounded-md text-xs font-medium ${
+                              sqsCheaper
+                                ? "bg-green-500/20 text-green-500 border border-green-500/30"
+                                : "bg-purple-500/20 text-purple-500 border border-purple-500/30"
+                            }`}>
+                              {analysis.pricing.region.code}
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {/* SQS Cost */}
+                          <div className={`p-4 rounded-lg border-2 ${
+                            sqsCheaper
+                              ? "bg-green-500/10 border-green-500/30"
+                              : "bg-muted/50 border-border"
+                          }`}>
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs sm:text-sm text-muted-foreground">Amazon SQS</span>
+                              {sqsCheaper && (
+                                <span className="text-[10px] sm:text-xs font-semibold text-green-500 flex items-center gap-1">
+                                  ✓ {savingsPercent}% {t.compare.cheaper}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+                              {analysis.pricing.sqs["10M"]}
+                            </div>
+                            <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+                              {t.compare.monthlyCostAt10M}
+                            </div>
+                          </div>
+
+                          {/* Kafka Cost */}
+                          <div className={`p-4 rounded-lg border-2 ${
+                            !sqsCheaper
+                              ? "bg-purple-500/10 border-purple-500/30"
+                              : "bg-muted/50 border-border"
+                          }`}>
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs sm:text-sm text-muted-foreground">Apache Kafka (MSK)</span>
+                              {!sqsCheaper && (
+                                <span className="text-[10px] sm:text-xs font-semibold text-purple-500 flex items-center gap-1">
+                                  ✓ {savingsPercent}% {t.compare.cheaper}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+                              {analysis.pricing.kafka["10M"]}
+                            </div>
+                            <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+                              {t.compare.monthlyCostAt10M}
+                            </div>
+                          </div>
+
+                          {/* Savings Badge */}
+                          <div className="pt-2 border-t border-border/50">
+                            <div className="flex items-center justify-between text-xs sm:text-sm">
+                              <span className="text-muted-foreground">{t.compare.savings}:</span>
+                              <span className="font-bold text-brand-primary">
+                                ${savings.toFixed(2)}/mês ({savingsPercent}%)
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
                 </div>
 
                 {showCharts && (
@@ -205,10 +293,10 @@ export default function ComparePage() {
                     <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
                       <CardHeader className="pb-3">
                         <CardTitle className="text-lg sm:text-xl">
-                          {locale === "pt" ? "Comparação de Métricas (Radar)" : "Metrics Comparison (Radar)"}
+                          {t.compare.metricsComparison}
                         </CardTitle>
                         <CardDescription className="text-xs sm:text-sm">
-                          {locale === "pt" ? "Comparação visual entre todas as métricas" : "Visual comparison across all metrics"}
+                          {t.compare.metricsComparisonDesc}
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -254,10 +342,10 @@ export default function ComparePage() {
                     <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
                       <CardHeader className="pb-3">
                         <CardTitle className="text-lg sm:text-xl">
-                          {locale === "pt" ? "Comparação de Custos (Barras)" : "Cost Comparison (Bar)"}
+                          {t.compare.costComparisonChart}
                         </CardTitle>
                         <CardDescription className="text-xs sm:text-sm">
-                          {locale === "pt" ? "Custos mensais com 10M mensagens/mês" : "Monthly costs at 10M messages/month"}
+                          {t.compare.costComparisonChartDesc}
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -283,7 +371,7 @@ export default function ComparePage() {
                               tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
                               stroke="hsl(var(--border))"
                               label={{
-                                value: "Cost ($)",
+                                value: t.compare.costLabel,
                                 angle: -90,
                                 position: "insideLeft",
                                 fill: "hsl(var(--muted-foreground))",
@@ -332,12 +420,10 @@ export default function ComparePage() {
                 <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg sm:text-xl">
-                      {locale === "pt" ? "Comparação Lado a Lado" : "Side-by-Side Comparison"}
+                      {t.compare.sideBySide}
                     </CardTitle>
                     <CardDescription className="text-xs sm:text-sm">
-                      {locale === "pt"
-                        ? `Comparando ${selectedAnalyses.length} análises`
-                        : `Comparing ${selectedAnalyses.length} analyses`}
+                      {t.compare.comparingAnalyses.replace('{count}', selectedAnalyses.length.toString())}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="px-2 sm:px-6">
@@ -345,7 +431,7 @@ export default function ComparePage() {
                       <table className="w-full">
                         <thead>
                           <tr className="border-b border-border">
-                            <th className="text-left p-3 font-semibold">Metric</th>
+                            <th className="text-left p-3 font-semibold">{t.compare.metric}</th>
                             {selectedAnalysesData.map((analysis) => (
                               <th key={analysis.id} className="text-left p-3 font-semibold">
                                 {analysis.recommendation}
@@ -355,7 +441,7 @@ export default function ComparePage() {
                         </thead>
                         <tbody>
                           <tr className="border-b border-border/50">
-                            <td className="p-3 text-muted-foreground">Date</td>
+                            <td className="p-3 text-muted-foreground">{t.compare.date}</td>
                             {selectedAnalysesData.map((analysis) => (
                               <td key={analysis.id} className="p-3">
                                 {new Date(analysis.savedAt).toLocaleDateString()}
@@ -363,7 +449,7 @@ export default function ComparePage() {
                             ))}
                           </tr>
                           <tr className="border-b border-border/50">
-                            <td className="p-3 text-muted-foreground">Region</td>
+                            <td className="p-3 text-muted-foreground">{t.compare.region}</td>
                             {selectedAnalysesData.map((analysis) => (
                               <td key={analysis.id} className="p-3">
                                 {analysis.pricing.region.name}
@@ -371,7 +457,7 @@ export default function ComparePage() {
                             ))}
                           </tr>
                           <tr className="border-b border-border/50">
-                            <td className="p-3 text-muted-foreground">SQS Cost (10M msgs)</td>
+                            <td className="p-3 text-muted-foreground">{t.compare.sqsCostDetail}</td>
                             {selectedAnalysesData.map((analysis) => (
                               <td key={analysis.id} className="p-3 font-medium">
                                 {analysis.pricing.sqs["10M"]}
@@ -379,7 +465,7 @@ export default function ComparePage() {
                             ))}
                           </tr>
                           <tr className="border-b border-border/50">
-                            <td className="p-3 text-muted-foreground">Kafka Cost (10M msgs)</td>
+                            <td className="p-3 text-muted-foreground">{t.compare.kafkaCostDetail}</td>
                             {selectedAnalysesData.map((analysis) => (
                               <td key={analysis.id} className="p-3 font-medium">
                                 {analysis.pricing.kafka["10M"]}
