@@ -81,7 +81,7 @@ export function Footer({ locale }: FooterProps) {
           </a>
           <span className="text-border">•</span>
           <a
-            href="https://github.com/fernandoazevedomoretes"
+            href="https://github.com/fernandofatech"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-brand-primary transition-colors font-medium flex items-center gap-1"

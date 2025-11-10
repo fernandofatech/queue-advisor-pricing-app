@@ -177,7 +177,7 @@ export function CreditsContent({ locale }: CreditsContentProps) {
             <p className="text-muted-foreground mb-6 leading-relaxed">{t.credits.contributeText}</p>
             <div className="flex flex-wrap gap-3">
               <a
-                href="https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app"
+                href="https://github.com/fernandofatech/queue-advisor-pricing-app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary text-white hover:bg-brand-primary/90 transition-all font-medium"
@@ -186,7 +186,7 @@ export function CreditsContent({ locale }: CreditsContentProps) {
                 {t.credits.githubRepo}
               </a>
               <a
-                href="https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/issues"
+                href="https://github.com/fernandofatech/queue-advisor-pricing-app/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-brand-primary hover:bg-brand-primary/10 transition-all font-medium"
@@ -194,7 +194,7 @@ export function CreditsContent({ locale }: CreditsContentProps) {
                 {t.credits.reportIssue}
               </a>
               <a
-                href="https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/pulls"
+                href="https://github.com/fernandofatech/queue-advisor-pricing-app/pulls"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-brand-secondary hover:bg-brand-secondary/10 transition-all font-medium"

@@ -1,8 +1,8 @@
 # QueueAdvisor
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://queueadvisor.fernando.moretes.com)
-[![Open Source](https://img.shields.io/badge/Open-Source-green?style=for-the-badge)](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app)
-[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge)](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/issues)
+[![Open Source](https://img.shields.io/badge/Open-Source-green?style=for-the-badge)](https://github.com/fernandofatech/queue-advisor-pricing-app)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge)](https://github.com/fernandofatech/queue-advisor-pricing-app/issues)
 
 > 🚀 **Open Source MVP** - An independent tool that aggregates AWS information to help you choose between Amazon SQS and Apache Kafka (MSK)
 
@@ -111,9 +111,9 @@ Visit [http://localhost:3000](http://localhost:3000) to see the app.
 
 This is an open-source project and **contributions are welcome**!
 
-- 🐛 Found a bug? [Open an issue](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/issues)
-- 💡 Have an idea? [Start a discussion](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/discussions)
-- 🔧 Want to contribute? [Submit a pull request](https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app/pulls)
+- 🐛 Found a bug? [Open an issue](https://github.com/fernandofatech/queue-advisor-pricing-app/issues)
+- 💡 Have an idea? [Start a discussion](https://github.com/fernandofatech/queue-advisor-pricing-app/discussions)
+- 🔧 Want to contribute? [Submit a pull request](https://github.com/fernandofatech/queue-advisor-pricing-app/pulls)
 
 ## Project Goals
 
@@ -133,7 +133,7 @@ This project is open source and available under the MIT License.
 ### Fernando Francisco Azevedo
 
 - Portfolio: [fernando.moretes.com](https://fernando.moretes.com)
-- GitHub: [@fernandoazevedomoretes](https://github.com/fernandoazevedomoretes)
+- GitHub: [@fernandofatech](https://github.com/fernandofatech)
 - LinkedIn: [fernando-francisco-azevedo](https://www.linkedin.com/in/fernando-francisco-azevedo)
 
 ---

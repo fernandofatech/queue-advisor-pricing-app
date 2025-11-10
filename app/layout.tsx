@@ -169,7 +169,7 @@ export default function RootLayout({
         },
         sameAs: [
           "https://linkedin.com/in/fernando-francisco-azevedo",
-          "https://github.com/fernandoazevedomoretes",
+          "https://github.com/fernandofatech",
           "https://fernando.moretes.com",
         ],
       },

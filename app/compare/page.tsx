@@ -56,6 +56,32 @@ export default function ComparePage() {
         logging: false,
         windowWidth: comparisonElement.scrollWidth,
         windowHeight: comparisonElement.scrollHeight,
+        ignoreElements: (element) => {
+          // Ignore elements that might cause parsing issues
+          return element.classList?.contains('no-print')
+        },
+        onclone: (clonedDoc) => {
+          // Convert modern CSS color functions to hex/rgb for compatibility
+          const clonedElement = clonedDoc.getElementById("comparison-content")
+          if (clonedElement) {
+            const allElements = clonedElement.querySelectorAll("*")
+            allElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement
+              const computedStyle = window.getComputedStyle(el)
+
+              // Force computed colors to be applied as inline styles
+              if (computedStyle.color) {
+                htmlEl.style.color = computedStyle.color
+              }
+              if (computedStyle.backgroundColor) {
+                htmlEl.style.backgroundColor = computedStyle.backgroundColor
+              }
+              if (computedStyle.borderColor) {
+                htmlEl.style.borderColor = computedStyle.borderColor
+              }
+            })
+          }
+        }
       })
 
       canvas.toBlob((blob) => {

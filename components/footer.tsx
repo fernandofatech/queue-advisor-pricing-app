@@ -54,7 +54,7 @@ export function Footer({ locale }: FooterProps) {
           {/* Right: Links */}
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com/fernandoazevedomoretes/queue-advisor-pricing-app"
+              href="https://github.com/fernandofatech/queue-advisor-pricing-app"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-brand-primary transition-colors text-sm font-medium"
