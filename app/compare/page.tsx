@@ -108,7 +108,7 @@ export default function ComparePage() {
   const selectedAnalysesData = savedAnalyses.filter((a) => selectedAnalyses.includes(a.id))
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <Link href="/">
@@ -119,7 +119,7 @@ export default function ComparePage() {
           </Link>
           <div className="flex items-center gap-3 mb-2">
             <GitCompare className="h-8 w-8 text-brand-primary" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-linear-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
               Compare Analyses
             </h1>
           </div>
@@ -135,7 +135,7 @@ export default function ComparePage() {
                 No saved analyses yet. Run a comparison and save it to see it here!
               </p>
               <Link href="/">
-                <Button className="mt-4 gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white">
+                <Button className="mt-4 gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white">
                   Start New Analysis
                 </Button>
               </Link>
@@ -149,7 +149,7 @@ export default function ComparePage() {
                   key={analysis.id}
                   className={`border-2 cursor-pointer transition-all hover:shadow-lg ${
                     selectedAnalyses.includes(analysis.id)
-                      ? "border-brand-primary bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10"
+                      ? "border-brand-primary bg-linear-to-br from-brand-primary/10 to-brand-secondary/10"
                       : "border-border bg-card/80"
                   }`}
                   onClick={() => handleToggleSelect(analysis.id)}
@@ -217,7 +217,7 @@ export default function ComparePage() {
                   <div className="flex gap-3">
                     <Button
                       onClick={exportComparison}
-                      className="gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
+                      className="gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
                     >
                       <Download className="h-4 w-4" />
                       Export
@@ -243,20 +243,38 @@ export default function ComparePage() {
                       <CardContent>
                         <ResponsiveContainer width="100%" height={350}>
                           <RadarChart data={selectedAnalysesData[0]?.radarData || []}>
-                            <PolarGrid stroke="hsl(var(--border))" />
-                            <PolarAngleAxis dataKey="metric" stroke="hsl(var(--foreground))" />
-                            <PolarRadiusAxis angle={90} domain={[0, 10]} stroke="hsl(var(--muted-foreground))" />
+                            <PolarGrid
+                              stroke="hsl(var(--border))"
+                              strokeWidth={1}
+                            />
+                            <PolarAngleAxis
+                              dataKey="metric"
+                              tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
+                              stroke="hsl(var(--border))"
+                            />
+                            <PolarRadiusAxis
+                              angle={90}
+                              domain={[0, 10]}
+                              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                              stroke="hsl(var(--border))"
+                            />
                             {selectedAnalysesData.map((analysis, idx) => (
                               <Radar
                                 key={analysis.id}
                                 name={analysis.recommendation}
                                 dataKey={idx === 0 ? "sqs" : "kafka"}
-                                stroke={idx === 0 ? "hsl(var(--chart-2))" : idx === 1 ? "hsl(var(--chart-3))" : "hsl(var(--chart-4))"}
-                                fill={idx === 0 ? "hsl(var(--chart-2))" : idx === 1 ? "hsl(var(--chart-3))" : "hsl(var(--chart-4))"}
-                                fillOpacity={0.3}
+                                stroke={idx === 0 ? "#10b981" : idx === 1 ? "#8b5cf6" : "#f59e0b"}
+                                fill={idx === 0 ? "#10b981" : idx === 1 ? "#8b5cf6" : "#f59e0b"}
+                                fillOpacity={0.25}
+                                strokeWidth={2}
                               />
                             ))}
-                            <Legend />
+                            <Legend
+                              wrapperStyle={{
+                                color: "hsl(var(--foreground))",
+                                fontSize: "13px"
+                              }}
+                            />
                           </RadarChart>
                         </ResponsiveContainer>
                       </CardContent>
@@ -276,19 +294,59 @@ export default function ComparePage() {
                               Kafka: parseFloat(analysis.pricing.kafka["10M"].replace("$", "")),
                             }))}
                           >
-                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                            <XAxis dataKey="name" stroke="hsl(var(--foreground))" />
-                            <YAxis stroke="hsl(var(--foreground))" />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: "hsl(var(--card))",
-                                border: "1px solid hsl(var(--border))",
-                                borderRadius: "8px"
+                            <CartesianGrid
+                              strokeDasharray="3 3"
+                              stroke="hsl(var(--border))"
+                              strokeOpacity={0.5}
+                            />
+                            <XAxis
+                              dataKey="name"
+                              tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
+                              stroke="hsl(var(--border))"
+                            />
+                            <YAxis
+                              tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
+                              stroke="hsl(var(--border))"
+                              label={{
+                                value: "Cost ($)",
+                                angle: -90,
+                                position: "insideLeft",
+                                fill: "hsl(var(--muted-foreground))",
+                                fontSize: 12
                               }}
                             />
-                            <Legend />
-                            <Bar dataKey="SQS" fill="hsl(var(--chart-2))" radius={[8, 8, 0, 0]} />
-                            <Bar dataKey="Kafka" fill="hsl(var(--chart-3))" radius={[8, 8, 0, 0]} />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "hsl(var(--popover))",
+                                border: "1px solid hsl(var(--border))",
+                                borderRadius: "8px",
+                                color: "hsl(var(--foreground))",
+                                fontSize: "13px"
+                              }}
+                              labelStyle={{
+                                color: "hsl(var(--foreground))",
+                                fontWeight: 600
+                              }}
+                              formatter={(value: number) => [`$${value.toFixed(2)}`, ""]}
+                            />
+                            <Legend
+                              wrapperStyle={{
+                                color: "hsl(var(--foreground))",
+                                fontSize: "13px"
+                              }}
+                            />
+                            <Bar
+                              dataKey="SQS"
+                              fill="#10b981"
+                              radius={[8, 8, 0, 0]}
+                              name="Amazon SQS"
+                            />
+                            <Bar
+                              dataKey="Kafka"
+                              fill="#8b5cf6"
+                              radius={[8, 8, 0, 0]}
+                              name="Apache Kafka (MSK)"
+                            />
                           </BarChart>
                         </ResponsiveContainer>
                       </CardContent>

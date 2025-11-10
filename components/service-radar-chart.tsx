@@ -15,11 +15,12 @@ interface ServiceRadarChartProps {
 export function ServiceRadarChart({ data }: ServiceRadarChartProps) {
   const { theme } = useTheme()
 
-  // Updated colors for better contrast and brand consistency
-  const sqsColor = theme === "dark" ? "hsl(265, 60%, 70%)" : "hsl(265, 70%, 55%)"
-  const kafkaColor = theme === "dark" ? "hsl(40, 80%, 65%)" : "hsl(40, 85%, 50%)"
-  const gridColor = theme === "dark" ? "hsl(250, 20%, 35%)" : "hsl(250, 15%, 70%)"
-  const textColor = theme === "dark" ? "hsl(0, 0%, 95%)" : "hsl(0, 0%, 15%)"
+  // Bright, vibrant colors that work well in both themes
+  const sqsColor = "#10b981" // Emerald green
+  const kafkaColor = "#8b5cf6" // Purple
+  const gridColor = theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"
+  const textColor = theme === "dark" ? "#f3f4f6" : "#1f2937"
+  const axisColor = theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)"
 
   return (
     <motion.div
@@ -38,23 +39,24 @@ export function ServiceRadarChart({ data }: ServiceRadarChartProps) {
               fontSize: 12,
               fontWeight: 600,
             }}
+            stroke={axisColor}
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 10]}
             tick={{
               fill: textColor,
-              fontSize: 10,
+              fontSize: 11,
               fontWeight: 500,
             }}
-            stroke={gridColor}
+            stroke={axisColor}
           />
           <Radar
             name="Amazon SQS"
             dataKey="sqs"
             stroke={sqsColor}
             fill={sqsColor}
-            fillOpacity={0.4}
+            fillOpacity={0.3}
             strokeWidth={3}
           />
           <Radar
@@ -62,7 +64,7 @@ export function ServiceRadarChart({ data }: ServiceRadarChartProps) {
             dataKey="kafka"
             stroke={kafkaColor}
             fill={kafkaColor}
-            fillOpacity={0.4}
+            fillOpacity={0.3}
             strokeWidth={3}
           />
           <Legend
