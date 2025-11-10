@@ -150,8 +150,8 @@ export default function ComparePage() {
             </div>
             <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
               {locale === "pt"
-                ? "Selecione até 3 análises para comparar lado a lado"
-                : "Select up to 3 analyses to compare side by side"}
+                ? "Selecione de 1 a 3 análises para visualizar e comparar"
+                : "Select 1 to 3 analyses to view and compare"}
             </p>
           </motion.div>
 

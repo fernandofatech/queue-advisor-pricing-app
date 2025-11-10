@@ -188,8 +188,8 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {/* AWS Free Tier Preset */}
-                    <div className="relative">
-                      <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 z-10">
+                    <div className="relative pt-2">
+                      <div className="absolute top-0 right-2 z-10">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-green-500/20 text-green-500 border border-green-500/30 shadow-md">
                           <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                           Free Tier
@@ -246,8 +246,8 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     />
                   </div>
 
-                  <div className="pt-6">
-                    <Card className="border-2 border-dashed border-brand-primary/30 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5 hover:border-brand-primary/50 transition-all cursor-pointer">
+                  <div className="pt-4 sm:pt-6">
+                    <Card className="border-2 border-dashed border-brand-primary/30 bg-linear-to-br from-brand-primary/5 to-brand-secondary/5 hover:border-brand-primary/50 transition-all cursor-pointer">
                       <button
                         type="button"
                         onClick={() => {
@@ -256,20 +256,20 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                         }}
                         className="w-full"
                       >
-                        <CardContent className="pt-6 pb-6">
-                          <div className="flex items-center justify-center gap-3">
-                            <div className="p-3 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg shadow-md">
-                              <Settings className="h-6 w-6 text-white" />
+                        <CardContent className="pt-4 pb-4 sm:pt-6 sm:pb-6 px-4 sm:px-6">
+                          <div className="flex items-center justify-center gap-2 sm:gap-3">
+                            <div className="p-2 sm:p-3 bg-linear-to-br from-brand-primary to-brand-secondary rounded-lg shadow-md shrink-0">
+                              <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                             </div>
-                            <div className="text-left">
-                              <h3 className="font-semibold text-lg text-foreground">{t.customConfiguration}</h3>
-                              <p className="text-sm text-muted-foreground mt-0.5">
+                            <div className="text-left flex-1 min-w-0">
+                              <h3 className="font-semibold text-base sm:text-lg text-foreground">{t.customConfiguration}</h3>
+                              <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
                                 {locale === "pt"
                                   ? "Configure seus próprios parâmetros personalizados"
                                   : "Configure your own custom parameters"}
                               </p>
                             </div>
-                            <ChevronRight className="h-5 w-5 text-brand-primary ml-auto" />
+                            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-brand-primary shrink-0" />
                           </div>
                         </CardContent>
                       </button>
@@ -284,12 +284,12 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-8 py-4"
+                  className="space-y-6 sm:space-y-8 py-2 sm:py-4"
                 >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-base font-semibold">{t.messagesLabel}</Label>
-                      <span className="text-2xl font-bold text-brand-primary tabular-nums">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
+                      <Label className="text-sm sm:text-base font-semibold">{t.messagesLabel}</Label>
+                      <span className="text-xl sm:text-2xl font-bold text-brand-primary tabular-nums">
                         {formatNumber(formData.messagesPerMonth)}
                       </span>
                     </div>
@@ -321,10 +321,10 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-base font-semibold">{t.budgetLabel}</Label>
-                      <span className="text-2xl font-bold text-brand-secondary tabular-nums">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
+                      <Label className="text-sm sm:text-base font-semibold">{t.budgetLabel}</Label>
+                      <span className="text-xl sm:text-2xl font-bold text-brand-secondary tabular-nums">
                         ${formatNumber(formData.monthlyBudget)}
                       </span>
                     </div>
@@ -389,11 +389,11 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6 py-4"
+                  className="space-y-5 sm:space-y-6 py-2 sm:py-4"
                 >
-                  <div className="space-y-3">
-                    <Label className="text-base font-semibold">{t.orderingLabel}</Label>
-                    <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label className="text-sm sm:text-base font-semibold">{t.orderingLabel}</Label>
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       <OptionCard
                         selected={formData.requireOrdering === "yes"}
                         onClick={() => setFormData({ ...formData, requireOrdering: "yes" })}
@@ -407,9 +407,9 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <Label className="text-base font-semibold">{t.messageLossLabel}</Label>
-                    <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label className="text-sm sm:text-base font-semibold">{t.messageLossLabel}</Label>
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3">
                       <OptionCard
                         selected={formData.messageLossTolerance === "low"}
                         onClick={() => setFormData({ ...formData, messageLossTolerance: "low" })}
@@ -428,9 +428,9 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <Label className="text-base font-semibold">{t.replayLabel}</Label>
-                    <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label className="text-sm sm:text-base font-semibold">{t.replayLabel}</Label>
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       <OptionCard
                         selected={formData.replayNeeded === "yes"}
                         onClick={() => setFormData({ ...formData, replayNeeded: "yes" })}
@@ -452,11 +452,11 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6 py-4"
+                  className="space-y-5 sm:space-y-6 py-2 sm:py-4"
                 >
-                  <div className="space-y-3">
-                    <Label className="text-base font-semibold">{t.environmentLabel}</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="space-y-2 sm:space-y-3">
+                    <Label className="text-sm sm:text-base font-semibold">{t.environmentLabel}</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                       <OptionCard
                         selected={formData.environment === "aws"}
                         onClick={() => setFormData({ ...formData, environment: "aws" })}
@@ -472,40 +472,40 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-brand-primary" />
-                      <Label className="text-base font-semibold">
+                      <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-primary" />
+                      <Label className="text-sm sm:text-base font-semibold">
                         {locale === "pt" ? "Região da AWS" : "AWS Region"}
                       </Label>
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">
                       {locale === "pt"
                         ? "Selecione a região da AWS para ver preços regionais"
                         : "Select AWS region to see regional pricing"}
                     </p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {Object.values(AWS_REGIONS).map((region) => (
                         <button
                           key={region.code}
                           type="button"
                           onClick={() => setFormData({ ...formData, region: region.code })}
                           className={cn(
-                            "relative p-3 rounded-lg border-2 text-left transition-all hover:shadow-md",
+                            "relative p-2 sm:p-3 rounded-lg border-2 text-left transition-all hover:shadow-md min-h-[72px] sm:min-h-[80px]",
                             formData.region === region.code
-                              ? "border-brand-primary bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10"
+                              ? "border-brand-primary bg-linear-to-br from-brand-primary/10 to-brand-secondary/10"
                               : "border-border bg-card hover:border-brand-primary/30",
                           )}
                         >
-                          <div className="space-y-1">
-                            <div className="text-lg">{region.location.split(" ")[0]}</div>
-                            <div className={cn("text-xs font-medium", formData.region === region.code ? "text-brand-primary" : "text-foreground")}>
+                          <div className="space-y-0.5 sm:space-y-1">
+                            <div className="text-base sm:text-lg">{region.location.split(" ")[0]}</div>
+                            <div className={cn("text-[10px] sm:text-xs font-medium", formData.region === region.code ? "text-brand-primary" : "text-foreground")}>
                               {region.code}
                             </div>
-                            <div className="text-xs text-muted-foreground truncate">{region.location.split(" ").slice(1).join(" ")}</div>
+                            <div className="text-[10px] sm:text-xs text-muted-foreground truncate">{region.location.split(" ").slice(1).join(" ")}</div>
                           </div>
                           {formData.region === region.code && (
-                            <Check className="absolute top-2 right-2 h-4 w-4 text-brand-primary" />
+                            <Check className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-primary" />
                           )}
                         </button>
                       ))}
@@ -527,7 +527,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                 <Button
                   type="button"
                   onClick={nextStep}
-                  className="ml-auto gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all"
+                  className="ml-auto gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all"
                 >
                   {t.next}
                   <ChevronRight className="h-4 w-4" />
@@ -537,7 +537,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
               {currentStep === 3 && (
                 <Button
                   type="submit"
-                  className="ml-auto gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                  className="ml-auto gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -578,38 +578,38 @@ function PresetCard({ icon, title, description, features, onClick, selected }: P
       type="button"
       onClick={onClick}
       className={cn(
-        "relative p-5 rounded-lg border-2 text-left transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
+        "relative p-4 sm:p-5 rounded-lg border-2 text-left transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] min-h-[160px] sm:min-h-[180px]",
         selected
-          ? "border-brand-primary bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 shadow-md"
+          ? "border-brand-primary bg-linear-to-br from-brand-primary/10 to-brand-secondary/10 shadow-md"
           : "border-border bg-card hover:border-brand-primary/50",
       )}
     >
       {selected && (
-        <div className="absolute top-3 right-3 h-6 w-6 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-md">
-          <Check className="h-4 w-4 text-white" />
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-linear-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-md">
+          <Check className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
         </div>
       )}
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
         <div
           className={cn(
-            "p-2 rounded-lg transition-all",
+            "p-1.5 sm:p-2 rounded-lg transition-all shrink-0",
             selected
-              ? "bg-gradient-to-br from-brand-primary to-brand-secondary text-white shadow-sm"
+              ? "bg-linear-to-br from-brand-primary to-brand-secondary text-white shadow-sm"
               : "bg-muted text-muted-foreground",
           )}
         >
           {icon}
         </div>
-        <h3 className="font-semibold text-lg">{title}</h3>
+        <h3 className="font-semibold text-base sm:text-lg">{title}</h3>
       </div>
-      <p className="text-sm text-muted-foreground mb-4">{description}</p>
-      <ul className="space-y-1.5">
+      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">{description}</p>
+      <ul className="space-y-1 sm:space-y-1.5">
         {features.map((feature, index) => (
-          <li key={index} className="text-sm flex items-center gap-2">
+          <li key={index} className="text-xs sm:text-sm flex items-center gap-2">
             <div
               className={cn(
-                "h-1.5 w-1.5 rounded-full",
-                selected ? "bg-gradient-to-br from-brand-primary to-brand-secondary" : "bg-muted-foreground",
+                "h-1.5 w-1.5 rounded-full shrink-0",
+                selected ? "bg-linear-to-br from-brand-primary to-brand-secondary" : "bg-muted-foreground",
               )}
             />
             {feature}
@@ -633,26 +633,26 @@ function OptionCard({ selected, onClick, label, description }: OptionCardProps) 
       type="button"
       onClick={onClick}
       className={cn(
-        "relative p-4 rounded-lg border-2 text-left transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98]",
+        "relative p-3 sm:p-4 rounded-lg border-2 text-left transition-all hover:shadow-md hover:scale-[1.02] active:scale-[0.98] min-h-[56px] sm:min-h-[64px]",
         selected
-          ? "border-brand-primary bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5 shadow-sm"
+          ? "border-brand-primary bg-linear-to-br from-brand-primary/5 to-brand-secondary/5 shadow-sm"
           : "border-border bg-card hover:border-brand-primary/30",
       )}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <div
           className={cn(
-            "h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all",
-            selected ? "border-brand-primary bg-gradient-to-br from-brand-primary to-brand-secondary" : "border-muted-foreground",
+            "h-4 w-4 sm:h-5 sm:w-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0",
+            selected ? "border-brand-primary bg-linear-to-br from-brand-primary to-brand-secondary" : "border-muted-foreground",
           )}
         >
-          {selected && <div className="h-2 w-2 rounded-full bg-white" />}
+          {selected && <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white" />}
         </div>
-        <div className="flex-1">
-          <span className={cn("font-medium", selected && "bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent")}>
+        <div className="flex-1 min-w-0">
+          <span className={cn("font-medium text-sm sm:text-base", selected && "bg-linear-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent")}>
             {label}
           </span>
-          {description && <p className="text-xs text-muted-foreground mt-0.5">{description}</p>}
+          {description && <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{description}</p>}
         </div>
       </div>
     </button>

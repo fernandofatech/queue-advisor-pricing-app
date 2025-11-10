@@ -16,12 +16,31 @@
 
 ## Features
 
-- 🌎 **9 AWS Regions** with real pricing data
-- 📊 **Visual Comparisons** between SQS and Kafka/MSK
-- 🤖 **MCP Integration Resources** and tips
-- 🌐 **Bilingual Support** (English/Portuguese)
-- 📱 **Responsive Design** for all devices
-- 🎯 **Decision Algorithm** based on AWS best practices
+### Core Features
+- 🎯 **Smart Decision Algorithm** based on AWS best practices and real-world use cases
+- 📊 **Visual Comparisons** with interactive Radar and Bar charts (Recharts)
+- 🌎 **9 AWS Regions** with accurate regional pricing data
+- 💰 **AWS Free Tier Support** with validation and warnings
+- 📱 **Fully Responsive Design** optimized for mobile, tablet, and desktop
+
+### Analysis & Export
+- 💾 **Save & Compare Analyses** - Store up to 10 analyses and compare them side-by-side
+- 📥 **Multiple Export Formats** - PNG, Markdown, CSV, and JSON
+- 🔗 **Share Functionality** - Native sharing and social media integration
+- 🎨 **Print-Optimized** - Beautiful print formatting for reports
+
+### User Experience
+- 🚀 **5 Preset Configurations** - Free Tier, Microservices, Event Streaming, Cost Effective, High Throughput
+- 🌐 **Bilingual Support** - Full English and Portuguese translations
+- ✨ **Beautiful UI** with Framer Motion animations and toast notifications
+- 🎨 **Dark/Light Theme** support
+- ⚡ **Fast & Lightweight** - Optimized for performance
+
+### Technical
+- 🤖 **MCP Integration Resources** and tips for AI-assisted workflows
+- 📖 **Comprehensive Documentation** - Business and technical guides
+- 🔄 **Real-time Pricing Calculations** based on your usage patterns
+- 🎭 **Multi-step Wizard** for guided configuration
 
 ## Credits
 
@@ -43,21 +62,50 @@ All credits go to:
 
 ## Getting Started
 
-```bash
-# Install dependencies
-npm install
+### Prerequisites
+- Node.js 18+
+- pnpm (recommended) or npm
 
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/fernandofatech/queue-advisor-pricing-app.git
+cd queue-advisor-pricing-app
+
+# Install dependencies (using pnpm)
+pnpm install
+
+# Or using npm
+npm install
+```
+
+### Development
+
+```bash
 # Run development server
-npm run dev
+pnpm dev
 
 # Build for production
-npm run build
+pnpm build
 
 # Start production server
-npm start
+pnpm start
+
+# Run linter
+pnpm lint
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to see the app.
+
+## Key Pages
+
+- **`/`** - Homepage with comparison form and preset configurations
+- **`/compare`** - View and compare saved analyses with charts
+- **`/docs`** - Comprehensive documentation and AWS resources
+- **`/how-it-works`** - Explanation of the recommendation algorithm
+- **`/faq`** - Frequently asked questions
+- **`/credits`** - Credits and acknowledgments
 
 ## Contributing
 
