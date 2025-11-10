@@ -10,6 +10,9 @@ import type { ComparisonResult } from "@/types/comparison"
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts"
 import html2canvas from "html2canvas"
 import { toast } from "@/hooks/use-toast"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import type { Locale } from "@/lib/i18n"
 
 interface SavedAnalysis extends ComparisonResult {
   savedAt: string
@@ -20,6 +23,7 @@ export default function ComparePage() {
   const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([])
   const [selectedAnalyses, setSelectedAnalyses] = useState<string[]>([])
   const [showCharts, setShowCharts] = useState(true)
+  const [locale, setLocale] = useState<Locale>("en")
 
   useEffect(() => {
     const analyses = JSON.parse(localStorage.getItem("queueadvisor-analyses") || "[]")
@@ -29,11 +33,18 @@ export default function ComparePage() {
   const exportComparison = async () => {
     try {
       const comparisonElement = document.getElementById("comparison-content")
-      if (!comparisonElement) return
+      if (!comparisonElement) {
+        toast({
+          title: locale === "pt" ? "Erro ao exportar" : "Export error",
+          description: locale === "pt" ? "Elemento não encontrado" : "Element not found",
+          variant: "destructive"
+        })
+        return
+      }
 
       toast({
-        title: "Gerando imagem...",
-        description: "Por favor, aguarde"
+        title: locale === "pt" ? "Gerando imagem..." : "Generating image...",
+        description: locale === "pt" ? "Por favor, aguarde" : "Please wait"
       })
 
       await new Promise(resolve => setTimeout(resolve, 500))
@@ -43,27 +54,38 @@ export default function ComparePage() {
         scale: 2,
         useCORS: true,
         logging: false,
+        windowWidth: comparisonElement.scrollWidth,
+        windowHeight: comparisonElement.scrollHeight,
       })
 
       canvas.toBlob((blob) => {
-        if (!blob) return
+        if (!blob) {
+          toast({
+            title: locale === "pt" ? "Erro ao exportar" : "Export error",
+            description: locale === "pt" ? "Falha ao gerar imagem" : "Failed to generate image",
+            variant: "destructive"
+          })
+          return
+        }
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")
         a.href = url
-        a.download = `comparison-${Date.now()}.png`
+        a.download = `queueadvisor-comparison-${Date.now()}.png`
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)
         URL.revokeObjectURL(url)
 
         toast({
-          title: "Exportação concluída!",
-          description: "Imagem salva com sucesso"
+          title: locale === "pt" ? "✓ Exportação concluída!" : "✓ Export complete!",
+          description: locale === "pt" ? "Imagem salva com sucesso" : "Image saved successfully"
         })
       }, "image/png")
     } catch (error) {
+      console.error("Export error:", error)
       toast({
-        title: "Erro ao exportar",
+        title: locale === "pt" ? "Erro ao exportar" : "Export error",
+        description: locale === "pt" ? "Ocorreu um erro ao gerar a imagem" : "An error occurred while generating the image",
         variant: "destructive"
       })
     }
@@ -108,42 +130,49 @@ export default function ComparePage() {
   const selectedAnalysesData = savedAnalyses.filter((a) => selectedAnalyses.includes(a.id))
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <Link href="/">
-            <Button variant="ghost" className="gap-2 mb-4">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <GitCompare className="h-8 w-8 text-brand-primary" />
-            <h1 className="text-4xl font-bold bg-linear-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-              Compare Analyses
-            </h1>
-          </div>
-          <p className="text-muted-foreground text-lg">
-            Select up to 3 analyses to compare side by side
-          </p>
-        </motion.div>
+    <>
+      <Header locale={locale} onLocaleChange={setLocale} />
+      <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 md:mb-8">
+            <Link href="/">
+              <Button variant="ghost" className="gap-2 mb-4 -ml-2">
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">{locale === "pt" ? "Voltar ao Início" : "Back to Home"}</span>
+                <span className="sm:hidden">{locale === "pt" ? "Voltar" : "Back"}</span>
+              </Button>
+            </Link>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
+              <GitCompare className="h-6 w-6 sm:h-8 sm:w-8 text-brand-primary" />
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-linear-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
+                {locale === "pt" ? "Comparar Análises" : "Compare Analyses"}
+              </h1>
+            </div>
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
+              {locale === "pt"
+                ? "Selecione até 3 análises para comparar lado a lado"
+                : "Select up to 3 analyses to compare side by side"}
+            </p>
+          </motion.div>
 
         {savedAnalyses.length === 0 ? (
           <Card className="border-border bg-card/80 backdrop-blur">
-            <CardContent className="pt-12 pb-12 text-center">
-              <p className="text-muted-foreground text-lg">
-                No saved analyses yet. Run a comparison and save it to see it here!
+            <CardContent className="pt-8 pb-8 sm:pt-12 sm:pb-12 text-center px-4">
+              <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
+                {locale === "pt"
+                  ? "Nenhuma análise salva ainda. Execute uma comparação e salve para ver aqui!"
+                  : "No saved analyses yet. Run a comparison and save it to see it here!"}
               </p>
               <Link href="/">
-                <Button className="mt-4 gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white">
-                  Start New Analysis
+                <Button className="mt-4 gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white text-sm sm:text-base">
+                  {locale === "pt" ? "Iniciar Nova Análise" : "Start New Analysis"}
                 </Button>
               </Link>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-6 md:space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {savedAnalyses.map((analysis) => (
                 <Card
                   key={analysis.id}
@@ -154,14 +183,18 @@ export default function ComparePage() {
                   }`}
                   onClick={() => handleToggleSelect(analysis.id)}
                 >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">
+                  <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-base sm:text-lg truncate">
                           {analysis.recommendation}
                         </CardTitle>
-                        <CardDescription className="text-xs mt-1">
-                          {new Date(analysis.savedAt).toLocaleDateString()} {new Date(analysis.savedAt).toLocaleTimeString()}
+                        <CardDescription className="text-[10px] sm:text-xs mt-1">
+                          {new Date(analysis.savedAt).toLocaleDateString(locale === "pt" ? "pt-BR" : "en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric"
+                          })}
                         </CardDescription>
                       </div>
                       <Button
@@ -171,14 +204,14 @@ export default function ComparePage() {
                           e.stopPropagation()
                           handleDelete(analysis.id)
                         }}
-                        className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                        className="h-8 w-8 shrink-0 hover:bg-destructive/10 hover:text-destructive"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="pb-4">
+                    <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Region:</span>
                         <span className="font-medium">{analysis.pricing.region.code}</span>
@@ -197,51 +230,60 @@ export default function ComparePage() {
               ))}
             </div>
 
-            {selectedAnalyses.length > 1 && (
+            {selectedAnalyses.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 id="comparison-content"
               >
-                <div className="flex justify-between items-center mb-4 no-print">
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => setShowCharts(!showCharts)}
-                      variant="outline"
-                      className="gap-2"
-                    >
-                      <BarChart3 className="h-4 w-4" />
-                      {showCharts ? "Hide Charts" : "Show Charts"}
-                    </Button>
-                  </div>
-                  <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-4 no-print">
+                  <Button
+                    onClick={() => setShowCharts(!showCharts)}
+                    variant="outline"
+                    className="gap-2 w-full sm:w-auto"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {showCharts
+                        ? (locale === "pt" ? "Ocultar Gráficos" : "Hide Charts")
+                        : (locale === "pt" ? "Mostrar Gráficos" : "Show Charts")}
+                    </span>
+                    <span className="sm:hidden">
+                      {showCharts ? (locale === "pt" ? "Ocultar" : "Hide") : (locale === "pt" ? "Mostrar" : "Show")}
+                    </span>
+                  </Button>
+                  <div className="flex gap-2 sm:gap-3">
                     <Button
                       onClick={exportComparison}
-                      className="gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
+                      className="gap-2 flex-1 sm:flex-none bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
                     >
                       <Download className="h-4 w-4" />
-                      Export
+                      <span className="hidden sm:inline">{locale === "pt" ? "Exportar" : "Export"}</span>
                     </Button>
                     <Button
                       onClick={shareComparison}
                       variant="outline"
-                      className="gap-2"
+                      className="gap-2 flex-1 sm:flex-none"
                     >
                       <Share2 className="h-4 w-4" />
-                      Share
+                      <span className="hidden sm:inline">{locale === "pt" ? "Compartilhar" : "Share"}</span>
                     </Button>
                   </div>
                 </div>
 
                 {showCharts && (
-                  <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                     <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
-                      <CardHeader>
-                        <CardTitle>Metrics Comparison (Radar)</CardTitle>
-                        <CardDescription>Visual comparison across all metrics</CardDescription>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg sm:text-xl">
+                          {locale === "pt" ? "Comparação de Métricas (Radar)" : "Metrics Comparison (Radar)"}
+                        </CardTitle>
+                        <CardDescription className="text-xs sm:text-sm">
+                          {locale === "pt" ? "Comparação visual entre todas as métricas" : "Visual comparison across all metrics"}
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <ResponsiveContainer width="100%" height={350}>
+                        <ResponsiveContainer width="100%" height={280} className="sm:h-[350px]">
                           <RadarChart data={selectedAnalysesData[0]?.radarData || []}>
                             <PolarGrid
                               stroke="hsl(var(--border))"
@@ -281,12 +323,16 @@ export default function ComparePage() {
                     </Card>
 
                     <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
-                      <CardHeader>
-                        <CardTitle>Cost Comparison (Bar)</CardTitle>
-                        <CardDescription>Monthly costs at 10M messages/month</CardDescription>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg sm:text-xl">
+                          {locale === "pt" ? "Comparação de Custos (Barras)" : "Cost Comparison (Bar)"}
+                        </CardTitle>
+                        <CardDescription className="text-xs sm:text-sm">
+                          {locale === "pt" ? "Custos mensais com 10M mensagens/mês" : "Monthly costs at 10M messages/month"}
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <ResponsiveContainer width="100%" height={350}>
+                        <ResponsiveContainer width="100%" height={280} className="sm:h-[350px]">
                           <BarChart
                             data={selectedAnalysesData.map(analysis => ({
                               name: analysis.recommendation.split(" ")[1] || analysis.recommendation,
@@ -355,14 +401,18 @@ export default function ComparePage() {
                 )}
 
                 <Card className="border-border bg-card/80 backdrop-blur shadow-xl">
-                  <CardHeader>
-                    <CardTitle>Side-by-Side Comparison</CardTitle>
-                    <CardDescription>
-                      Comparing {selectedAnalyses.length} analyses
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg sm:text-xl">
+                      {locale === "pt" ? "Comparação Lado a Lado" : "Side-by-Side Comparison"}
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      {locale === "pt"
+                        ? `Comparando ${selectedAnalyses.length} análises`
+                        : `Comparing ${selectedAnalyses.length} analyses`}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
+                  <CardContent className="px-2 sm:px-6">
+                    <div className="overflow-x-auto -mx-2 sm:mx-0">
                       <table className="w-full">
                         <thead>
                           <tr className="border-b border-border">
@@ -429,7 +479,9 @@ export default function ComparePage() {
             )}
           </div>
         )}
+        </div>
       </div>
-    </div>
+      <Footer locale={locale} />
+    </>
   )
 }

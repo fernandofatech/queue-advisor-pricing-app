@@ -184,19 +184,19 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-4"
+                  className="space-y-4 sm:space-y-6"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {/* AWS Free Tier Preset */}
                     <div className="relative">
-                      <div className="absolute -top-2 -right-2 z-10">
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-500 border border-green-500/30 shadow-md">
-                          <Check className="h-3 w-3" />
+                      <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 z-10">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium bg-green-500/20 text-green-500 border border-green-500/30 shadow-md">
+                          <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                           Free Tier
                         </span>
                       </div>
                       <PresetCard
-                        icon={<Gift className="h-5 w-5" />}
+                        icon={<Gift className="h-4 w-4 sm:h-5 sm:w-5" />}
                         title={t.presetFreeTier}
                         description={t.presetFreeTierDesc}
                         features={[`${formatNumber(500000)} ${t.messagesMonth}`, t.noOrdering, `$0 ${t.budget}`]}
@@ -207,7 +207,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
 
                     {/* Microservices Preset */}
                     <PresetCard
-                      icon={<Sparkles className="h-5 w-5" />}
+                      icon={<Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />}
                       title={t.presetMicroservices}
                       description={t.presetMicroservicesDesc}
                       features={[`${formatNumber(5000000)} ${t.messagesMonth}`, t.noOrdering, `$200 ${t.budget}`]}
@@ -217,7 +217,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
 
                     {/* Event Streaming Preset */}
                     <PresetCard
-                      icon={<TrendingUp className="h-5 w-5" />}
+                      icon={<TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />}
                       title={t.presetEventStreaming}
                       description={t.presetEventStreamingDesc}
                       features={[`${formatNumber(50000000)} ${t.messagesMonth}`, t.withOrdering, `$1000 ${t.budget}`]}
@@ -227,7 +227,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
 
                     {/* Cost Effective Preset */}
                     <PresetCard
-                      icon={<DollarSign className="h-5 w-5" />}
+                      icon={<DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />}
                       title={t.presetCostEffective}
                       description={t.presetCostEffectiveDesc}
                       features={[`${formatNumber(1000000)} ${t.messagesMonth}`, t.highTolerance, `$50 ${t.budget}`]}
@@ -237,7 +237,7 @@ export function ComparisonForm({ locale }: ComparisonFormProps) {
 
                     {/* High Throughput Preset */}
                     <PresetCard
-                      icon={<Zap className="h-5 w-5" />}
+                      icon={<Zap className="h-4 w-4 sm:h-5 sm:w-5" />}
                       title={t.presetHighThroughput}
                       description={t.presetHighThroughputDesc}
                       features={[`${formatNumber(100000000)} ${t.messagesMonth}`, t.withReplay, `$2000 ${t.budget}`]}
