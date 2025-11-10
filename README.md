@@ -27,7 +27,7 @@
 ### Analysis & Export
 
 - 💾 **Save & Compare Analyses** - Store up to 10 analyses and compare them side-by-side
-- 📥 **Multiple Export Formats** - PNG, Markdown, CSV, and JSON
+- 📥 **Multiple Export Formats** - Markdown, CSV, and JSON
 - 🔗 **Share Functionality** - Native sharing and social media integration
 - 🎨 **Print-Optimized** - Beautiful print formatting for reports
 

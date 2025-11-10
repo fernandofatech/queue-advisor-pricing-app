@@ -136,7 +136,7 @@ Recommendation,${results.recommendation}
         <DropdownMenuTrigger asChild>
           <Button
             variant="default"
-            className="gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all"
+            className="gap-2 bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all"
           >
             <Download className="h-4 w-4" />
             {t.exportResults}

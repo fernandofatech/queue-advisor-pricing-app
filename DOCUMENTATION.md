@@ -380,7 +380,6 @@ const t = useTranslation(locale)
 
 ### **Charts & Visualization**
 - **Recharts**: Gráficos (Radar, Bar, Line)
-- **html2canvas**: Captura de screenshot para PNG
 
 ### **Utils**
 - **clsx/tailwind-merge**: Merge de classes CSS
@@ -432,7 +431,6 @@ const t = useTranslation(locale)
 
 ### **Bundle Size**
 - Recharts: ~100KB (lazy loaded)
-- html2canvas: ~50KB (lazy loaded)
 - Core app: ~150KB (gzipped)
 
 ---
