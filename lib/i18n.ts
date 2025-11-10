@@ -357,6 +357,9 @@ export const translations = {
       cheaper: "cheaper",
       moreExpensive: "more expensive",
       savings: "Savings",
+      recommended: "RECOMMENDED",
+      cheaperOption: "Cheaper option",
+      worthItBecause: "Worth the extra cost for:",
     },
   },
   pt: {
@@ -716,6 +719,9 @@ export const translations = {
       cheaper: "mais barato",
       moreExpensive: "mais caro",
       savings: "Economia",
+      recommended: "RECOMENDADO",
+      cheaperOption: "Opção mais barata",
+      worthItBecause: "Vale o custo extra por:",
     },
   },
 }

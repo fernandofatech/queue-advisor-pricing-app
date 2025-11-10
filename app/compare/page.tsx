@@ -209,6 +209,10 @@ export default function ComparePage() {
                     const sqsCheaper = sqsCost < kafkaCost
                     const savingsPercent = ((savings / Math.max(sqsCost, kafkaCost)) * 100).toFixed(0)
 
+                    // Detect which service was recommended
+                    const sqsRecommended = analysis.recommendation.toLowerCase().includes('sqs')
+                    const kafkaRecommended = analysis.recommendation.toLowerCase().includes('kafka') || analysis.recommendation.toLowerCase().includes('msk')
+
                     return (
                       <Card key={analysis.id} className="border-border bg-card/80 backdrop-blur shadow-lg">
                         <CardHeader className="pb-3">
@@ -220,7 +224,7 @@ export default function ComparePage() {
                               </CardTitle>
                             </div>
                             <div className={`px-2 py-1 rounded-md text-xs font-medium ${
-                              sqsCheaper
+                              sqsRecommended
                                 ? "bg-green-500/20 text-green-500 border border-green-500/30"
                                 : "bg-purple-500/20 text-purple-500 border border-purple-500/30"
                             }`}>
@@ -230,20 +234,31 @@ export default function ComparePage() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                           {/* SQS Cost */}
-                          <div className={`p-4 rounded-lg border-2 ${
-                            sqsCheaper
-                              ? "bg-green-500/10 border-green-500/30"
-                              : "bg-muted/50 border-border"
+                          <div className={`p-4 rounded-lg border-2 transition-all ${
+                            sqsRecommended
+                              ? "bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/40 shadow-md"
+                              : sqsCheaper
+                              ? "bg-blue-500/5 border-blue-500/20"
+                              : "bg-muted/30 border-border"
                           }`}>
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="text-xs sm:text-sm text-muted-foreground">Amazon SQS</span>
-                              {sqsCheaper && (
-                                <span className="text-[10px] sm:text-xs font-semibold text-green-500 flex items-center gap-1">
-                                  ✓ {savingsPercent}% {t.compare.cheaper}
-                                </span>
-                              )}
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`text-xs sm:text-sm font-medium ${sqsRecommended ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                Amazon SQS
+                              </span>
+                              <div className="flex flex-col items-end gap-1">
+                                {sqsRecommended && (
+                                  <span className="text-[10px] sm:text-xs font-bold text-green-500 flex items-center gap-1 px-2 py-0.5 bg-green-500/20 rounded-full border border-green-500/30">
+                                    ★ {t.compare.recommended}
+                                  </span>
+                                )}
+                                {!sqsRecommended && sqsCheaper && (
+                                  <span className="text-[10px] sm:text-xs font-medium text-blue-500 flex items-center gap-1">
+                                    💰 {t.compare.cheaperOption}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+                            <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${sqsRecommended ? 'text-green-600 dark:text-green-400' : 'text-foreground'}`}>
                               {analysis.pricing.sqs["10M"]}
                             </div>
                             <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
@@ -252,20 +267,31 @@ export default function ComparePage() {
                           </div>
 
                           {/* Kafka Cost */}
-                          <div className={`p-4 rounded-lg border-2 ${
-                            !sqsCheaper
-                              ? "bg-purple-500/10 border-purple-500/30"
-                              : "bg-muted/50 border-border"
+                          <div className={`p-4 rounded-lg border-2 transition-all ${
+                            kafkaRecommended
+                              ? "bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/40 shadow-md"
+                              : !sqsCheaper
+                              ? "bg-blue-500/5 border-blue-500/20"
+                              : "bg-muted/30 border-border"
                           }`}>
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="text-xs sm:text-sm text-muted-foreground">Apache Kafka (MSK)</span>
-                              {!sqsCheaper && (
-                                <span className="text-[10px] sm:text-xs font-semibold text-purple-500 flex items-center gap-1">
-                                  ✓ {savingsPercent}% {t.compare.cheaper}
-                                </span>
-                              )}
+                            <div className="flex items-center justify-between mb-2">
+                              <span className={`text-xs sm:text-sm font-medium ${kafkaRecommended ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                Apache Kafka (MSK)
+                              </span>
+                              <div className="flex flex-col items-end gap-1">
+                                {kafkaRecommended && (
+                                  <span className="text-[10px] sm:text-xs font-bold text-purple-500 flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 rounded-full border border-purple-500/30">
+                                    ★ {t.compare.recommended}
+                                  </span>
+                                )}
+                                {!kafkaRecommended && !sqsCheaper && (
+                                  <span className="text-[10px] sm:text-xs font-medium text-blue-500 flex items-center gap-1">
+                                    💰 {t.compare.cheaperOption}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+                            <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${kafkaRecommended ? 'text-purple-600 dark:text-purple-400' : 'text-foreground'}`}>
                               {analysis.pricing.kafka["10M"]}
                             </div>
                             <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
@@ -273,14 +299,26 @@ export default function ComparePage() {
                             </div>
                           </div>
 
-                          {/* Savings Badge */}
+                          {/* Cost Difference Info */}
                           <div className="pt-2 border-t border-border/50">
                             <div className="flex items-center justify-between text-xs sm:text-sm">
-                              <span className="text-muted-foreground">{t.compare.savings}:</span>
+                              <span className="text-muted-foreground">
+                                {sqsCheaper
+                                  ? `Amazon SQS ${savingsPercent}% ${t.compare.cheaper}`
+                                  : `Apache Kafka ${savingsPercent}% ${t.compare.cheaper}`
+                                }
+                              </span>
                               <span className="font-bold text-brand-primary">
-                                ${savings.toFixed(2)}/mês ({savingsPercent}%)
+                                ${savings.toFixed(2)}/mês
                               </span>
                             </div>
+                            {kafkaRecommended && sqsCheaper && (
+                              <div className="mt-3 p-2 bg-purple-500/5 border border-purple-500/20 rounded-md">
+                                <p className="text-[10px] sm:text-xs text-muted-foreground">
+                                  💡 <span className="font-medium text-purple-600 dark:text-purple-400">{t.compare.worthItBecause}</span> {locale === 'pt' ? 'Replay de mensagens, ordenação garantida e processamento em tempo real' : 'Message replay, guaranteed ordering, and real-time processing'}
+                                </p>
+                              </div>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
