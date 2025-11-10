@@ -8,7 +8,7 @@
 
 ## About This Project
 
-**QueueAdvisor** is an open-source MVP project that combines existing AWS documentation, pricing information, and best practices into a helpful decision-making tool. Built by AWS Solutions Architect Fernando Francisco Azevedo as a learning experience and community contribution.
+**QueueAdvisor** is an open-source MVP project that combines existing AWS documentation, pricing information, and best practices into a helpful decision-making tool. Built by Solutions Architect Fernando Francisco Azevedo as a learning experience and community contribution.
 
 ### Important Disclaimer
 
@@ -17,6 +17,7 @@
 ## Features
 
 ### Core Features
+
 - 🎯 **Smart Decision Algorithm** based on AWS best practices and real-world use cases
 - 📊 **Visual Comparisons** with interactive Radar and Bar charts (Recharts)
 - 🌎 **9 AWS Regions** with accurate regional pricing data
@@ -24,12 +25,14 @@
 - 📱 **Fully Responsive Design** optimized for mobile, tablet, and desktop
 
 ### Analysis & Export
+
 - 💾 **Save & Compare Analyses** - Store up to 10 analyses and compare them side-by-side
 - 📥 **Multiple Export Formats** - PNG, Markdown, CSV, and JSON
 - 🔗 **Share Functionality** - Native sharing and social media integration
 - 🎨 **Print-Optimized** - Beautiful print formatting for reports
 
 ### User Experience
+
 - 🚀 **5 Preset Configurations** - Free Tier, Microservices, Event Streaming, Cost Effective, High Throughput
 - 🌐 **Bilingual Support** - Full English and Portuguese translations
 - ✨ **Beautiful UI** with Framer Motion animations and toast notifications
@@ -37,6 +40,7 @@
 - ⚡ **Fast & Lightweight** - Optimized for performance
 
 ### Technical
+
 - 🤖 **MCP Integration Resources** and tips for AI-assisted workflows
 - 📖 **Comprehensive Documentation** - Business and technical guides
 - 🔄 **Real-time Pricing Calculations** based on your usage patterns
@@ -63,6 +67,7 @@ All credits go to:
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm (recommended) or npm
 

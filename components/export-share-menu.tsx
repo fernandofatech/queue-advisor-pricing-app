@@ -1,6 +1,6 @@
 "use client"
 
-import { Share2, FileText, FileSpreadsheet, FileJson, ImageIcon, Printer, Download } from "lucide-react"
+import { Share2, FileText, FileSpreadsheet, FileJson, Printer, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,7 +13,6 @@ import { toast } from "@/hooks/use-toast"
 import type { ComparisonResult } from "@/types/comparison"
 import type { Locale } from "@/lib/i18n"
 import { useTranslation } from "@/lib/i18n"
-import html2canvas from "html2canvas"
 
 interface ExportShareMenuProps {
   results: ComparisonResult
@@ -31,7 +30,6 @@ export function ExportShareMenu({ results, locale }: ExportShareMenuProps) {
           markdown: "Markdown (.md)",
           csv: "CSV (.csv)",
           json: "JSON (.json)",
-          image: "Image (.png)",
           print: "Print",
           twitter: "Twitter / X",
           linkedin: "LinkedIn",
@@ -46,7 +44,6 @@ export function ExportShareMenu({ results, locale }: ExportShareMenuProps) {
           markdown: "Markdown (.md)",
           csv: "CSV (.csv)",
           json: "JSON (.json)",
-          image: "Imagem (.png)",
           print: "Imprimir",
           twitter: "Twitter / X",
           linkedin: "LinkedIn",
@@ -109,63 +106,6 @@ Recommendation,${results.recommendation}
     toast({ title: translations.exportSuccess, description: translations.json })
   }
 
-  const exportAsImage = async () => {
-    try {
-      const resultsElement = document.getElementById("results-container")
-      if (!resultsElement) {
-        toast({
-          title: translations.exportError,
-          description: "Results container not found",
-          variant: "destructive"
-        })
-        return
-      }
-
-      // Show loading toast
-      toast({
-        title: locale === "pt" ? "Gerando imagem..." : "Generating image...",
-        description: locale === "pt" ? "Por favor, aguarde" : "Please wait"
-      })
-
-      // Wait a bit for any animations to complete
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const canvas = await html2canvas(resultsElement, {
-        backgroundColor: "#0a0a0a",
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        windowWidth: resultsElement.scrollWidth,
-        windowHeight: resultsElement.scrollHeight,
-      })
-
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          toast({ title: translations.exportError, variant: "destructive" })
-          return
-        }
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement("a")
-        a.href = url
-        a.download = `queueadvisor-${Date.now()}.png`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-
-        toast({ title: translations.exportSuccess, description: translations.image })
-      }, "image/png")
-
-    } catch (error) {
-      console.error("Export error:", error)
-      toast({
-        title: translations.exportError,
-        description: locale === "pt" ? "Erro ao gerar imagem" : "Error generating image",
-        variant: "destructive"
-      })
-    }
-  }
-
   const handlePrint = () => {
     window.print()
     toast({ title: translations.exportSuccess, description: translations.print })
@@ -215,10 +155,6 @@ Recommendation,${results.recommendation}
           <DropdownMenuItem onClick={exportAsJSON} className="cursor-pointer">
             <FileJson className="mr-2 h-4 w-4" />
             {translations.json}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={exportAsImage} className="cursor-pointer">
-            <ImageIcon className="mr-2 h-4 w-4" />
-            {translations.image}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handlePrint} className="cursor-pointer">
             <Printer className="mr-2 h-4 w-4" />

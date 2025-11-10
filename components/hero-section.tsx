@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import type { Locale } from "@/lib/i18n"
+import { motion } from "framer-motion";
+import type { Locale } from "@/lib/i18n";
 
 interface HeroSectionProps {
-  locale: Locale
+  locale: Locale;
 }
 
 export function HeroSection({ locale }: HeroSectionProps) {
@@ -14,7 +14,7 @@ export function HeroSection({ locale }: HeroSectionProps) {
       title: "Choose Between SQS and Kafka with Confidence",
       subtitle: "Data-Driven Recommendations for Your Messaging Architecture",
       description:
-        "An open-source MVP tool that aggregates AWS information, official documentation, and best practices to help you select between Amazon SQS and Apache Kafka (MSK). Built by AWS Solutions Architect Fernando Francisco Azevedo, this tool combines existing resources to provide personalized architecture recommendations based on your technical requirements, message volume, budget, and AWS region.",
+        "An open-source MVP tool that aggregates AWS information, official documentation, and best practices to help you select between Amazon SQS and Apache Kafka (MSK). Built by Solutions Architect Fernando Francisco Azevedo, this tool combines existing resources to provide personalized architecture recommendations based on your technical requirements, message volume, budget, and AWS region.",
       features: [
         "9 AWS Regions with Real Pricing",
         "Aggregated AWS Best Practices",
@@ -27,9 +27,10 @@ export function HeroSection({ locale }: HeroSectionProps) {
     pt: {
       badge: "MVP Open Source · Ferramenta de Decisão AWS",
       title: "Escolha Entre SQS e Kafka com Confiança",
-      subtitle: "Recomendações Baseadas em Dados para Sua Arquitetura de Mensageria",
+      subtitle:
+        "Recomendações Baseadas em Dados para Sua Arquitetura de Mensageria",
       description:
-        "Uma ferramenta MVP open-source que agrega informações da AWS, documentação oficial e melhores práticas para ajudá-lo a selecionar entre Amazon SQS e Apache Kafka (MSK). Construída pelo Arquiteto de Soluções AWS Fernando Francisco Azevedo, esta ferramenta combina recursos existentes para fornecer recomendações de arquitetura personalizadas baseadas em seus requisitos técnicos, volume de mensagens, orçamento e região AWS.",
+        "Uma ferramenta MVP open-source que agrega informações da AWS, documentação oficial e melhores práticas para ajudá-lo a selecionar entre Amazon SQS e Apache Kafka (MSK). Construída pelo Arquiteto de Soluções Fernando Francisco Azevedo, esta ferramenta combina recursos existentes para fornecer recomendações de arquitetura personalizadas baseadas em seus requisitos técnicos, volume de mensagens, orçamento e região AWS.",
       features: [
         "9 Regiões AWS com Preços Reais",
         "Melhores Práticas AWS Agregadas",
@@ -39,9 +40,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
       mcpNote:
         "💡 Este MVP agrega informações da AWS, documentação MCP e recursos da comunidade. Todos os créditos aos criadores e mantenedores originais.",
     },
-  }
+  };
 
-  const t = content[locale]
+  const t = content[locale];
 
   return (
     <motion.div
@@ -89,7 +90,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
             <div className="relative flex items-center gap-2 md:gap-2.5 px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-gradient-to-br from-card/80 to-card border border-brand-primary/20 backdrop-blur-sm hover:border-brand-primary/40 transition-all duration-300 shadow-sm hover:shadow-md">
               <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-brand-primary to-brand-secondary shadow-sm" />
-              <span className="text-xs md:text-sm font-medium text-foreground whitespace-nowrap">{feature}</span>
+              <span className="text-xs md:text-sm font-medium text-foreground whitespace-nowrap">
+                {feature}
+              </span>
             </div>
           </motion.div>
         ))}
@@ -107,5 +110,5 @@ export function HeroSection({ locale }: HeroSectionProps) {
         </p>
       </motion.div>
     </motion.div>
-  )
+  );
 }

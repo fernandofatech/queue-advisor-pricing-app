@@ -126,7 +126,6 @@ Quando 2+ análises selecionadas:
 - Todas as métricas do radar (Score/10)
 
 #### **Funcionalidades**
-- **Export**: Gera PNG da comparação completa
 - **Share**: Compartilha via Web Share API ou copia link
 - **Hide/Show Charts**: Alterna visualização de gráficos
 
@@ -321,13 +320,7 @@ Scalability,7,9
 }
 ```
 
-#### **4. PNG (Image)**
-- Captura screenshot dos resultados usando html2canvas
-- Escala 2x para alta resolução
-- Background escuro preservado
-- Inclui todos os gráficos e tabelas
-
-#### **5. Print**
+#### **4. Print**
 - CSS otimizado para impressão
 - Remove botões e elementos interativos
 - Preserva cores e gráficos

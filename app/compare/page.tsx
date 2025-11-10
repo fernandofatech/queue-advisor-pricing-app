@@ -4,11 +4,10 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Trash2, ArrowLeft, GitCompare, Download, Share2, BarChart3 } from "lucide-react"
+import { Trash2, ArrowLeft, GitCompare, Share2, BarChart3 } from "lucide-react"
 import Link from "next/link"
 import type { ComparisonResult } from "@/types/comparison"
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts"
-import html2canvas from "html2canvas"
 import { toast } from "@/hooks/use-toast"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -29,93 +28,6 @@ export default function ComparePage() {
     const analyses = JSON.parse(localStorage.getItem("queueadvisor-analyses") || "[]")
     setSavedAnalyses(analyses)
   }, [])
-
-  const exportComparison = async () => {
-    try {
-      const comparisonElement = document.getElementById("comparison-content")
-      if (!comparisonElement) {
-        toast({
-          title: locale === "pt" ? "Erro ao exportar" : "Export error",
-          description: locale === "pt" ? "Elemento não encontrado" : "Element not found",
-          variant: "destructive"
-        })
-        return
-      }
-
-      toast({
-        title: locale === "pt" ? "Gerando imagem..." : "Generating image...",
-        description: locale === "pt" ? "Por favor, aguarde" : "Please wait"
-      })
-
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const canvas = await html2canvas(comparisonElement, {
-        backgroundColor: "#0a0a0a",
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        windowWidth: comparisonElement.scrollWidth,
-        windowHeight: comparisonElement.scrollHeight,
-        ignoreElements: (element) => {
-          // Ignore elements that might cause parsing issues
-          return element.classList?.contains('no-print')
-        },
-        onclone: (clonedDoc) => {
-          // Convert modern CSS color functions to hex/rgb for compatibility
-          const clonedElement = clonedDoc.getElementById("comparison-content")
-          if (clonedElement) {
-            const allElements = clonedElement.querySelectorAll("*")
-            allElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement
-              const computedStyle = window.getComputedStyle(el)
-
-              // Force computed colors to be applied as inline styles
-              if (computedStyle.color) {
-                htmlEl.style.color = computedStyle.color
-              }
-              if (computedStyle.backgroundColor) {
-                htmlEl.style.backgroundColor = computedStyle.backgroundColor
-              }
-              if (computedStyle.borderColor) {
-                htmlEl.style.borderColor = computedStyle.borderColor
-              }
-            })
-          }
-        }
-      })
-
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          toast({
-            title: locale === "pt" ? "Erro ao exportar" : "Export error",
-            description: locale === "pt" ? "Falha ao gerar imagem" : "Failed to generate image",
-            variant: "destructive"
-          })
-          return
-        }
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement("a")
-        a.href = url
-        a.download = `queueadvisor-comparison-${Date.now()}.png`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-
-        toast({
-          title: locale === "pt" ? "✓ Exportação concluída!" : "✓ Export complete!",
-          description: locale === "pt" ? "Imagem salva com sucesso" : "Image saved successfully"
-        })
-      }, "image/png")
-    } catch (error) {
-      console.error("Export error:", error)
-      toast({
-        title: locale === "pt" ? "Erro ao exportar" : "Export error",
-        description: locale === "pt" ? "Ocorreu um erro ao gerar a imagem" : "An error occurred while generating the image",
-        variant: "destructive"
-      })
-    }
-  }
 
   const shareComparison = () => {
     const text = `Comparando ${selectedAnalyses.length} análises no QueueAdvisor`
@@ -278,23 +190,14 @@ export default function ComparePage() {
                       {showCharts ? (locale === "pt" ? "Ocultar" : "Hide") : (locale === "pt" ? "Mostrar" : "Show")}
                     </span>
                   </Button>
-                  <div className="flex gap-2 sm:gap-3">
-                    <Button
-                      onClick={exportComparison}
-                      className="gap-2 flex-1 sm:flex-none bg-linear-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span className="hidden sm:inline">{locale === "pt" ? "Exportar" : "Export"}</span>
-                    </Button>
-                    <Button
-                      onClick={shareComparison}
-                      variant="outline"
-                      className="gap-2 flex-1 sm:flex-none"
-                    >
-                      <Share2 className="h-4 w-4" />
-                      <span className="hidden sm:inline">{locale === "pt" ? "Compartilhar" : "Share"}</span>
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={shareComparison}
+                    variant="outline"
+                    className="gap-2 w-full sm:w-auto"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">{locale === "pt" ? "Compartilhar" : "Share"}</span>
+                  </Button>
                 </div>
 
                 {showCharts && (
